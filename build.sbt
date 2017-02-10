@@ -1,4 +1,4 @@
-name := """play-java-intro"""
+name := """leadboxer-notification"""
 
 version := "1.0-SNAPSHOT"
 
