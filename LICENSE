@@ -1,7 +1,25 @@
 License
 -------
-Written in 2016 by Lightbend <info@lightbend.com>
+ Copyright (c) 2014 - 2017, LeadBoxer and/or its affiliates. All rights
+ reserved.
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 
-To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+ This code is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License version 2 only, as
+ published by the Free Software Foundation.  LeadBoxer designates this
+ particular file as subject to the "Classpath" exception as provided
+ by LeadBoxer in the LICENSE file that accompanied this code.
 
-You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ This code is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ version 2 for more details (a copy is included in the LICENSE file that
+ accompanied this code).
+
+ You should have received a copy of the GNU General Public License version
+ 2 along with this work; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ Please contact LeadBoxer, Herengracht 182 Amsterdam, Noord-Holland 1016 BR
+ Netherlands or visit www.leadboxer.com if you need additional information or
+ have any questions.
