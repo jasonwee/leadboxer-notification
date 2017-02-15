@@ -22,6 +22,8 @@ libraryDependencies += "org.webjars" % "jquery" % "2.1.1"
 
 libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3"
 
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.36"
+
 
 // Compile the project before generating Eclipse files, so that generated .scala
 // or .class files for views and routes are present
