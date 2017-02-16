@@ -71,6 +71,8 @@
                     @header("nKey", "Key")
                     @header("nValue", "Value")
                     @header("emailRecipients", "Email recipients")
+                    @header("nsAdded", "NS added")
+                    @header("lastSend", "Alert last send")
                 </tr>
             </thead>
             <tbody>
@@ -104,6 +106,20 @@
                                 <em>-</em>
                             } else {
                                 @ns.getEmailRecipients()
+                            }
+                        </td>
+                        <td>
+                            @if(ns.getNsAdded == null) {
+                                <em>-</em>
+                            } else {
+                                @ns.getNsAdded()
+                            }
+                        </td>
+                        <td>
+                            @if(ns.getLastSend() == null) {
+                                <em>0</em>
+                            } else {
+                                @ns.getLastSend()
                             }
                         </td>
                     </tr>
