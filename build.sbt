@@ -12,7 +12,7 @@ libraryDependencies += jdbc
 
 libraryDependencies += "org.mockito" % "mockito-core" % "2.1.0"
 
-libraryDependencies += javaWs % "test"
+libraryDependencies += javaWs
 
 libraryDependencies += "org.hibernate" % "hibernate-core" % "5.2.5.Final"
 
