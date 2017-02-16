@@ -20,14 +20,18 @@ public class NotificationSpecification extends Model {
 	@Constraints.Required
 	public String nKey;
 	
+	// value is a reserved keyword, so prepend n
 	@Constraints.Required
 	public String nValue;
 	
 	@Constraints.Required
 	public String emailRecipients;
 	
-	@Formats.DateTime(pattern = "yyyy-MM-dd")
-	public Date added;
+	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date ndAdded;
+	
+	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date lastSend;
 	
 	public static Find<Long, NotificationSpecification> find = new Find<Long, NotificationSpecification>() {};
 	
