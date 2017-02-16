@@ -34,8 +34,8 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 ###########################
 
-GET /nd                            controllers.Notification.list()
-GET /nds                           controllers.Notification.listAll()
+GET /ns                            controllers.Notification.list()
+GET /nss                           controllers.Notification.listAll()
 
-GET /nd/new                     controllers.Notification.create()
-POST /nd/                          controllers.Notification.save()
+GET /ns/new                     controllers.Notification.create()
+POST /ns/                          controllers.Notification.save()
