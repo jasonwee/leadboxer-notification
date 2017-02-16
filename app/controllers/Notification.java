@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Transaction;
+
 import models.NotificationSpecification;
 import play.data.Form;
 import play.data.FormFactory;
@@ -59,7 +62,27 @@ public class Notification extends Controller {
 	
 	// update (edit)
 	public Result update(Long id) {
-		return ok();
+		Form<NotificationSpecification> ndForm = formFactory.form(NotificationSpecification.class).bindFromRequest();
+		if (ndForm.hasErrors()) {
+			return badRequest(views.html.nsEditForm.render(id, ndForm));
+		}
+		Transaction txn = Ebean.beginTransaction();
+		try {
+			NotificationSpecification savedNS = NotificationSpecification.find.byId(id);
+			if (savedNS != null) {
+				NotificationSpecification newNS = ndForm.get();
+				savedNS.setnKey(newNS.getnKey());
+				savedNS.setnValue(newNS.getnValue());
+				savedNS.setEmailRecipients(newNS.getEmailRecipients());
+
+				savedNS.update();
+				flash("success", "Notification Specification" + ndForm.get().getnKey() + " has been updated");
+				txn.commit();
+			}
+		} finally {
+			txn.end();
+		}
+		return edit(id);
 	}
 	
 	// delete
