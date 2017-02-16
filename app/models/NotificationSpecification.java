@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -37,6 +38,16 @@ public class NotificationSpecification extends Model {
 	
 	public static List<NotificationSpecification> findAll() {
 		return NotificationSpecification.find.orderBy("id").findList();
+	}
+
+	public static PagedList<NotificationSpecification> page(int page, int pageSize, String sortBy, String order, String filter) {
+		return 
+				find.where()
+				.ilike("nValue", "%" + filter + "%")
+				.orderBy(sortBy + " " + order)
+				.setFirstRow(pageSize)
+				.setMaxRows(pageSize)
+				.findPagedList();
 	}
 	
 	
