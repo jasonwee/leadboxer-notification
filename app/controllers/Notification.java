@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import models.Computer;
 import models.NotificationSpecification;
 import play.data.Form;
 import play.data.FormFactory;
@@ -36,7 +35,7 @@ public class Notification extends Controller {
 		}
 		nsForm.get().save();
 		flash("success", "Notification Specification " + nsForm.get().nKey + " has been created");
-		return ok(views.html.nsCreateForm.render(nsForm));
+		return listAll();
 	}
 	
 	
@@ -52,9 +51,21 @@ public class Notification extends Controller {
 		return ok(toJson(notificationSpecifications));
 	}
 	
-	// u
+	// update (edit)
+	public Result edit(Long id) {
+		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class).fill(NotificationSpecification.find.byId(id));
+		return ok(views.html.nsEditForm.render(id, nsForm));
+	}
 	
+	// update (edit)
+	public Result update(Long id) {
+		return ok();
+	}
 	
-	// d
+	// delete
+	public Result delete(Long id) {
+		return ok();
+	}
+	
 
 }
