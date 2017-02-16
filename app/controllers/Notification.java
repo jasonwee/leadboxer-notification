@@ -87,7 +87,9 @@ public class Notification extends Controller {
 	
 	// delete
 	public Result delete(Long id) {
-		return ok();
+		NotificationSpecification.find.ref(id).delete();
+		flash("success", "NotificationSpecification has been deleted");
+		return listAll();
 	}
 	
 
