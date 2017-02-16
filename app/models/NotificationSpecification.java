@@ -1,10 +1,13 @@
 package models;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import org.joda.time.DateTime;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
@@ -33,7 +36,7 @@ public class NotificationSpecification extends Model {
 	
 	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date ndAdded;
+	public Date nsAdded;
 
 	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -79,12 +82,12 @@ public class NotificationSpecification extends Model {
 		this.datasetId = datasetId;
 	}
 
-	public Date getNdAdded() {
-		return ndAdded;
+	public Date getNsAdded() {
+		return nsAdded;
 	}
 
-	public void setNdAdded(Date ndAdded) {
-		this.ndAdded = ndAdded;
+	public void setNsAdded(Date nsAdded) {
+		this.nsAdded = nsAdded;
 	}
 
 	public Date getLastSend() {
@@ -98,7 +101,7 @@ public class NotificationSpecification extends Model {
 	@Override
 	public String toString() {
 		return "NotificationSpecification [id=" + id + ", nKey=" + nKey + ", nValue=" + nValue + ", emailRecipients="
-				+ emailRecipients + ", datasetId=" + datasetId + ", ndAdded=" + ndAdded + ", lastSend=" + lastSend
+				+ emailRecipients + ", datasetId=" + datasetId + ", nsAdded=" + nsAdded + ", lastSend=" + lastSend
 				+ "]";
 	}
 
