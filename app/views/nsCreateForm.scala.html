@@ -11,10 +11,11 @@
     @b3.form(routes.Notification.save()) {
         
         <fieldset>
+            @b3.text(nsForm("datasetId"), '_label -> "dataset Id", '_help -> "")
             @b3.text(nsForm("nKey"), '_label -> "key", '_help -> "")
             @b3.text(nsForm("nValue"), '_label -> "value", '_help -> "")
             @b3.text(nsForm("emailRecipients"), '_label -> "email recipients", '_help -> "")
-            @b3.date(nsForm("nsAdded"), '_label -> "ns date", '_help -> "")
+            @b3.datetime(nsForm("nsAdded"), '_label -> "ns datetime", '_help -> "")
         </fieldset>
         
         <div class="actions">
