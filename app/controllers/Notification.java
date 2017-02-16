@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.PagedList;
 import com.avaje.ebean.Transaction;
 
 import models.NotificationSpecification;
@@ -25,6 +26,12 @@ public class Notification extends Controller {
 		this.formFactory = formFactory;
 	}
 	
+	public Result GO_LIST = redirect(routes.Notification.list(0, "nKey", "asc", ""));
+
+	public Result index() {
+		return GO_LIST;
+	}
+
 	// create, show the form
 	public Result create() {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class);
@@ -38,15 +45,19 @@ public class Notification extends Controller {
 			return badRequest(views.html.nsCreateForm.render(nsForm));
 		}
 		nsForm.get().save();
+		// TODO
+		// SEND HTTP REQUEST TO LOGSERVER
 		flash("success", "Notification Specification " + nsForm.get().nKey + " has been created");
-		return listAll();
+		return GO_LIST;
 	}
 	
 	
 	// list all notification specification
 	// r
-	public Result list() {
-		return ok("list content");
+	public Result list(int page, String sortBy, String order, String filter) {
+		PagedList<NotificationSpecification> foo = NotificationSpecification.page(page, 10, sortBy, order, filter);
+		foo.getList().forEach((ns) -> Logger.info("debug = {}", ns));
+		return ok(views.html.nsList.render(foo, sortBy, order, filter));
 	}
 	
 	// r
@@ -80,11 +91,13 @@ public class Notification extends Controller {
 				savedNS.update();
 				flash("success", "Notification Specification" + ndForm.get().getnKey() + " has been updated");
 				txn.commit();
+				// TODO
+				// send http request to logserver.
 			}
 		} finally {
 			txn.end();
 		}
-		return edit(id);
+		return GO_LIST;
 	}
 	
 	// delete
