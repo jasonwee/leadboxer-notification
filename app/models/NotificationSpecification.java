@@ -28,9 +28,14 @@ public class NotificationSpecification extends Model {
 	@Constraints.Required
 	public String emailRecipients;
 	
+	@Constraints.Required
+	public String datasetId;
+	
+	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date ndAdded;
-	
+
+	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date lastSend;
 	
@@ -66,6 +71,14 @@ public class NotificationSpecification extends Model {
 		this.emailRecipients = emailRecipients;
 	}
 
+	public String getDatasetId() {
+		return datasetId;
+	}
+
+	public void setDatasetId(String datasetId) {
+		this.datasetId = datasetId;
+	}
+
 	public Date getNdAdded() {
 		return ndAdded;
 	}
@@ -85,7 +98,8 @@ public class NotificationSpecification extends Model {
 	@Override
 	public String toString() {
 		return "NotificationSpecification [id=" + id + ", nKey=" + nKey + ", nValue=" + nValue + ", emailRecipients="
-				+ emailRecipients + ", ndAdded=" + ndAdded + ", lastSend=" + lastSend + "]";
+				+ emailRecipients + ", datasetId=" + datasetId + ", ndAdded=" + ndAdded + ", lastSend=" + lastSend
+				+ "]";
 	}
 
 	public static Find<Long, NotificationSpecification> find = new Find<Long, NotificationSpecification>() {};
