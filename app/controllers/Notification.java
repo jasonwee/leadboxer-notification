@@ -22,6 +22,9 @@ public class Notification extends Controller {
 	FormFactory formFactory;
 	
 	@Inject
+	private LogServer logServer;
+
+	@Inject
 	public Notification(FormFactory formFactory) {
 		this.formFactory = formFactory;
 	}
@@ -45,8 +48,7 @@ public class Notification extends Controller {
 			return badRequest(views.html.nsCreateForm.render(nsForm));
 		}
 		nsForm.get().save();
-		// TODO
-		// SEND HTTP REQUEST TO LOGSERVER
+		logServer.updateDataset(nsForm.get().getDatasetId());
 		flash("success", "Notification Specification " + nsForm.get().nKey + " has been created");
 		return GO_LIST;
 	}
@@ -60,13 +62,6 @@ public class Notification extends Controller {
 		return ok(views.html.nsList.render(foo, sortBy, order, filter));
 	}
 	
-	// r
-	public Result listAll() {
-		List<NotificationSpecification> notificationSpecifications = NotificationSpecification.findAll();
-		notificationSpecifications.forEach((ns) -> Logger.info("notificationSpecifications={}", ns));
-		return ok(toJson(notificationSpecifications));
-	}
-	
 	// update (edit)
 	public Result edit(Long id) {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class).fill(NotificationSpecification.find.byId(id));
@@ -75,24 +70,23 @@ public class Notification extends Controller {
 	
 	// update (edit)
 	public Result update(Long id) {
-		Form<NotificationSpecification> ndForm = formFactory.form(NotificationSpecification.class).bindFromRequest();
-		if (ndForm.hasErrors()) {
-			return badRequest(views.html.nsEditForm.render(id, ndForm));
+		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class).bindFromRequest();
+		if (nsForm.hasErrors()) {
+			return badRequest(views.html.nsEditForm.render(id, nsForm));
 		}
 		Transaction txn = Ebean.beginTransaction();
 		try {
 			NotificationSpecification savedNS = NotificationSpecification.find.byId(id);
 			if (savedNS != null) {
-				NotificationSpecification newNS = ndForm.get();
+				NotificationSpecification newNS = nsForm.get();
 				savedNS.setnKey(newNS.getnKey());
 				savedNS.setnValue(newNS.getnValue());
 				savedNS.setEmailRecipients(newNS.getEmailRecipients());
 
 				savedNS.update();
-				flash("success", "Notification Specification" + ndForm.get().getnKey() + " has been updated");
+				flash("success", "Notification Specification" + nsForm.get().getnKey() + " has been updated");
 				txn.commit();
-				// TODO
-				// send http request to logserver.
+				logServer.updateDataset(nsForm.get().getDatasetId());
 			}
 		} finally {
 			txn.end();
@@ -104,7 +98,8 @@ public class Notification extends Controller {
 	public Result delete(Long id) {
 		NotificationSpecification.find.ref(id).delete();
 		flash("success", "NotificationSpecification has been deleted");
-		return listAll();
+		logServer.updateDataset(NotificationSpecification.find.ref(id).getDatasetId());
+		return GO_LIST;
 	}
 	
 
