@@ -14,7 +14,7 @@ import play.data.validation.Constraints;
 
 @Entity
 public class NotificationSpecification extends Model {
-	
+
 	@Id
 	public Long id;
 	
@@ -80,6 +80,12 @@ public class NotificationSpecification extends Model {
 
 	public void setLastSend(Date lastSend) {
 		this.lastSend = lastSend;
+	}
+
+	@Override
+	public String toString() {
+		return "NotificationSpecification [id=" + id + ", nKey=" + nKey + ", nValue=" + nValue + ", emailRecipients="
+				+ emailRecipients + ", ndAdded=" + ndAdded + ", lastSend=" + lastSend + "]";
 	}
 
 	public static Find<Long, NotificationSpecification> find = new Find<Long, NotificationSpecification>() {};
