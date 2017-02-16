@@ -13,7 +13,7 @@
 ########################
 
 # Default path will just redirect to the computer list
-GET     /                           controllers.Application.index()
+GET     /computer                           controllers.Application.index()
 
 # Computers list (look at the default values for pagination parameters)
 GET     /computers                  controllers.Application.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
@@ -34,9 +34,12 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 ###########################
 
-GET /ns                            controllers.Notification.list()
-GET /nss                       controllers.Notification.listAll()
+#GET /ns                            controllers.Notification.list()
+#GET /nss                       controllers.Notification.listAll()
 #GET /nss                          controllers.Notification.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+GET /                                controllers.Notification.index()
+GET /ns                             controllers.Notification.list(p:Int ?= 0, s ?= "nKey", o ?= "asc", f ?= "")
+GET /nss                           controllers.Notification.listAll()
 
 # create
 GET /ns/new                     controllers.Notification.create()
