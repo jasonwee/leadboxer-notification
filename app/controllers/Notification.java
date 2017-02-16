@@ -8,6 +8,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Transaction;
 
 import models.NotificationSpecification;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -51,6 +52,7 @@ public class Notification extends Controller {
 	// r
 	public Result listAll() {
 		List<NotificationSpecification> notificationSpecifications = NotificationSpecification.findAll();
+		notificationSpecifications.forEach((ns) -> Logger.info("notificationSpecifications={}", ns));
 		return ok(toJson(notificationSpecifications));
 	}
 	
