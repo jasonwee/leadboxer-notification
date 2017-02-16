@@ -39,7 +39,6 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #GET /nss                          controllers.Notification.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
 GET /                                controllers.Notification.index()
 GET /ns                             controllers.Notification.list(p:Int ?= 0, s ?= "nKey", o ?= "asc", f ?= "")
-GET /nss                           controllers.Notification.listAll()
 
 # create
 GET /ns/new                     controllers.Notification.create()
@@ -52,3 +51,6 @@ POST    /ns/:id                   controllers.Notification.update(id:Long)
 # delete
 POST    /ns/:id/delete        controllers.Notification.delete(id:Long)
 
+####################
+
+GET /ls/all                                controllers.LogServer.listAll()
