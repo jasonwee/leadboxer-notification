@@ -22,13 +22,13 @@ public class Notification extends Controller {
 		this.formFactory = formFactory;
 	}
 	
-	// c
+	// create, show the form
 	public Result create() {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class);
 		return ok(views.html.ndCreateForm.render(nsForm));
 	}
 	
-	// c
+	// create, save the form
 	public Result save() {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class).bindFromRequest();
 		if (nsForm.hasErrors()) {
@@ -36,7 +36,7 @@ public class Notification extends Controller {
 		}
 		nsForm.get().save();
 		flash("success", "Notification Specification " + nsForm.get().nKey + " has been created");
-		return ok();
+		return ok(views.html.ndCreateForm.render(nsForm));
 	}
 	
 	
