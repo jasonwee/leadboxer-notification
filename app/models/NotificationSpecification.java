@@ -34,6 +34,54 @@ public class NotificationSpecification extends Model {
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date lastSend;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getnKey() {
+		return nKey;
+	}
+
+	public void setnKey(String nKey) {
+		this.nKey = nKey;
+	}
+
+	public String getnValue() {
+		return nValue;
+	}
+
+	public void setnValue(String nValue) {
+		this.nValue = nValue;
+	}
+
+	public String getEmailRecipients() {
+		return emailRecipients;
+	}
+
+	public void setEmailRecipients(String emailRecipients) {
+		this.emailRecipients = emailRecipients;
+	}
+
+	public Date getNdAdded() {
+		return ndAdded;
+	}
+
+	public void setNdAdded(Date ndAdded) {
+		this.ndAdded = ndAdded;
+	}
+
+	public Date getLastSend() {
+		return lastSend;
+	}
+
+	public void setLastSend(Date lastSend) {
+		this.lastSend = lastSend;
+	}
+
 	public static Find<Long, NotificationSpecification> find = new Find<Long, NotificationSpecification>() {};
 	
 	public static List<NotificationSpecification> findAll() {
