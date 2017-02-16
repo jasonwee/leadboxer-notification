@@ -25,18 +25,18 @@ public class Notification extends Controller {
 	// create, show the form
 	public Result create() {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class);
-		return ok(views.html.ndCreateForm.render(nsForm));
+		return ok(views.html.nsCreateForm.render(nsForm));
 	}
 	
 	// create, save the form
 	public Result save() {
 		Form<NotificationSpecification> nsForm = formFactory.form(NotificationSpecification.class).bindFromRequest();
 		if (nsForm.hasErrors()) {
-			return badRequest(views.html.ndCreateForm.render(nsForm));
+			return badRequest(views.html.nsCreateForm.render(nsForm));
 		}
 		nsForm.get().save();
 		flash("success", "Notification Specification " + nsForm.get().nKey + " has been created");
-		return ok(views.html.ndCreateForm.render(nsForm));
+		return ok(views.html.nsCreateForm.render(nsForm));
 	}
 	
 	
