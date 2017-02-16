@@ -99,7 +99,7 @@ public class NotificationSpecification extends Model {
 				find.where()
 				.ilike("nValue", "%" + filter + "%")
 				.orderBy(sortBy + " " + order)
-				.setFirstRow(pageSize)
+				.setFirstRow(page)
 				.setMaxRows(pageSize)
 				.findPagedList();
 	}
