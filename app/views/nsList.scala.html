@@ -67,6 +67,7 @@
             <thead>
                 <tr>
                     @header("id", "Id")
+                    @header("datasetId", "Dataset Id")
                     @header("nKey", "Key")
                     @header("nValue", "Value")
                     @header("emailRecipients", "Email recipients")
@@ -77,6 +78,13 @@
                 @for(ns <- currentPage.getList) {
                     <tr>
                         <td><a href="@routes.Notification.edit(ns.getId())">@ns.getId()</a></td>
+                        <td>
+                            @if(ns.getDatasetId() == null) {
+                                <em>-</em>
+                            } else {
+                                @ns.getDatasetId()
+                            }
+                        </td>
                         <td>
                             @if(ns.getnKey() == null) {
                                 <em>-</em>
