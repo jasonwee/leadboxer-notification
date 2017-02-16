@@ -10,7 +10,8 @@
     
     @b3.form(routes.Notification.update(id)) {
         
-        <fieldset>        
+        <fieldset>
+            @b3.text(nsForm("datasetId"), '_label -> "datasetId", '_help -> "")
             @b3.text(nsForm("nKey"), '_label -> "key", '_help -> "")
             @b3.text(nsForm("nValue"), '_label -> "value", '_help -> "")
             @b3.text(nsForm("emailRecipients"), '_label -> "email recipients", '_help -> "")
