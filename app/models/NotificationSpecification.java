@@ -121,6 +121,8 @@ public class NotificationSpecification extends Model {
 				.findPagedList();
 	}
 	
-	
+	public static List<NotificationSpecification> byDataset(String datasetId) {
+		return find.where().eq("datasetId", datasetId).findList();
+	}
 
 }
