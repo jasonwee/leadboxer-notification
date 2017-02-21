@@ -124,5 +124,9 @@ public class NotificationSpecification extends Model {
 	public static List<NotificationSpecification> byDataset(String datasetId) {
 		return find.where().eq("datasetId", datasetId).findList();
 	}
+	
+	public static List<NotificationSpecification> distinctDatasets() {
+		return find.where().setDistinct(true).select("datasetId").findList();
+	}
 
 }
