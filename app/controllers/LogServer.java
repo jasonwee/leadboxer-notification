@@ -33,7 +33,97 @@ public class LogServer extends Controller {
    public Result listAll() {
       List<NotificationSpecification> notificationSpecifications = NotificationSpecification.findAll();
       notificationSpecifications.forEach((ns) -> Logger.info("notificationSpecifications={}", ns));
-      return ok(toJson(notificationSpecifications));
+      return ok(getDatasetsFromDS());
+   }
+
+   public JsonNode getDatasetsFromDS() {
+      // select datasetIds
+      List<NotificationSpecification> datasetIds = NotificationSpecification.distinctDatasets();
+
+      boolean enable = false;
+
+      if (datasetIds == null | datasetIds.isEmpty()) {
+         // return empty string? TODO need to test
+         return Json.newObject();
+      }
+
+      ObjectMapper om = new ObjectMapper();
+      ObjectNode root = Json.newObject();
+      ArrayNode datasets = root.putArray("datasets");
+
+      // going through all datasets id one by one
+      for (NotificationSpecification datasetId : datasetIds) {
+
+         String dId = datasetId.getDatasetId();
+
+         Logger.info("datasetId {}", dId);
+
+         // get single dataset id
+         List<NotificationSpecification> nss = NotificationSpecification.byDataset(dId);
+
+         List<String> companies = new ArrayList<>();
+         List<String> industries = new ArrayList<>();
+         List<String> urls = new ArrayList<>();
+
+         for (NotificationSpecification ns : nss) {
+            switch (ns.getnKey()) {
+            case "most_likely_company":
+               companies.add(ns.getnValue());
+               break;
+            case "li_industry":
+               industries.add(ns.getnValue());
+               break;
+            case "original_url":
+               urls.add(ns.getnValue());
+               break;
+            }
+         }
+
+         // TODO we should really put this into a form where user can
+         // specify.
+         if (companies.size() > 0 || industries.size() > 0 || urls.size() > 0) {
+            enable = true;
+         }
+
+         ObjectNode dataset = om.createObjectNode();
+         dataset.put("datasetId", dId);
+         dataset.put("enable", enable);
+         ObjectNode notifications = dataset.putObject("notifications");
+
+         if (companies.size() == 1) {
+            notifications.put("most_likely_company", companies.get(0));
+         } else if (companies.size() > 1) {
+            ArrayNode an = notifications.putArray("most_likely_company");
+            companies.forEach((c) -> an.add(c));
+         }
+
+         if (industries.size() == 1) {
+            notifications.put("li_industry", industries.get(0));
+         } else if (industries.size() > 1) {
+            ArrayNode an = notifications.putArray("li_industry");
+            industries.forEach(i -> an.add(i));
+         }
+
+         if (urls.size() == 1) {
+            notifications.put("original_url", urls.get(0));
+         } else if (urls.size() > 1) {
+            ArrayNode an = notifications.putArray("original_url");
+            urls.forEach(u -> an.add(u));
+         }
+
+         datasets.add(dataset);
+      }
+
+      try {
+         ObjectMapper mapper = new ObjectMapper();
+         mapper.enable(SerializationFeature.INDENT_OUTPUT);
+         String ident = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+         Logger.info(ident);
+      } catch (JsonProcessingException e) {
+         Logger.error("", e);
+      }
+
+      return root;
    }
 
    /**
@@ -51,7 +141,7 @@ public class LogServer extends Controller {
             .setRequestTimeout(5000)
             .setContentType("application/json");
 
-      JsonNode body = readFromDB(datasetId);
+      JsonNode body = getDatasetFromDS(datasetId);
 
       CompletionStage<WSResponse> responsePromise = request.post(body);
 
@@ -85,7 +175,7 @@ public class LogServer extends Controller {
     * @param datasetId
     * @return
     */
-   public JsonNode readFromDB(String datasetId) {
+   public JsonNode getDatasetFromDS(String datasetId) {
       // no need meddle with jdbc, just use orm
       /*
       try (Connection con = DB.getConnection();) {
