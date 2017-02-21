@@ -12,3 +12,17 @@
   * http://alvinalexander.com/scala/sbt-how-to-configure-work-with-eclipse-projects
   * http://stackoverflow.com/questions/25995664/how-to-add-sbteclipse-plugin-in-eclipse
   * https://www.playframework.com/documentation/2.5.x/IDE
+
+* so how do I run locally to see this project?
+
+  in the root project, run the command `$./sbt` then in the sbt console, type `run` and hit enter button, now go to your browser and point the browser url to `localhost:9000`.
+
+  if you are using eclipse at the same time, which some app occupied port 9000, you can run using command `run 9001`.
+
+* do i need to create table in the database manually?
+
+  no, you don't have to, once you run the command and play framework will ask you to run the script generated from evolution.
+
+* i need assistance (about this project), how to contact you?
+
+  yes, you can email me or leave me a message.
