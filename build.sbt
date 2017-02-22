@@ -35,3 +35,5 @@ EclipseKeys.preTasks := Seq(compile in Compile)
 // https://www.playframework.com/documentation/2.5.x/IDE
 EclipseKeys.projectFlavor := EclipseProjectFlavor.Java           // Java project. Don't expect Scala IDE
 EclipseKeys.createSrc := EclipseCreateSrc.ValueSet(EclipseCreateSrc.ManagedClasses, EclipseCreateSrc.ManagedResources)  // Use .class files instead of generated .scala files for views and routes
+EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
+EclipseKeys.withSource := true
