@@ -24,8 +24,7 @@ public class Notification extends Controller {
 	@Inject
 	private LogServer logServer;
 	
-	@Inject
-	private EmailController emailer;
+
 
 	@Inject
 	public Notification(FormFactory formFactory) {
@@ -62,9 +61,6 @@ public class Notification extends Controller {
 	public Result list(int page, String sortBy, String order, String filter) {
 		PagedList<NotificationSpecification> foo = NotificationSpecification.page(page, 10, sortBy, order, filter);
 		foo.getList().forEach((ns) -> Logger.info("debug = {}", ns));
-		
-		//logServer.getDatasetsFromDS();
-		//emailer.sendEmail(recipients, message)
 		
 		return ok(views.html.nsList.render(foo, sortBy, order, filter));
 	}
