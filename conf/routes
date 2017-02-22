@@ -39,6 +39,8 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #GET /nss                          controllers.Notification.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
 GET /                                controllers.Notification.index()
 GET /ns                             controllers.Notification.list(p:Int ?= 0, s ?= "nKey", o ?= "asc", f ?= "")
+GET /ns/hit                        controllers.NotificationHit.index()
+GET /ns/hit1                        controllers.NotificationHit.sayHello(name:String)
 
 # create
 GET /ns/new                     controllers.Notification.create()
