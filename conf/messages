@@ -1,3 +1,3 @@
 # Messages
 
-notificationSpecifications.list.title={0,choice,0#No otification specifications|1#One notification specification|1<{0,number,integer} notification specifications} found
+notificationSpecifications.list.title={0,choice,0#No notification specifications|1#One notification specification|1<{0,number,integer} notification specifications} found
