@@ -16,11 +16,12 @@ libraryDependencies += javaWs
 
 libraryDependencies += "org.hibernate" % "hibernate-core" % "5.2.5.Final"
 
-libraryDependencies += "org.webjars" % "jquery" % "2.1.1"
-
-//libraryDependencies += "org.webjars" % "bootstrap" % "3.3.1"
-
-libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3"
+// see http://adrianhurt.github.io/play-bootstrap/
+libraryDependencies ++= Seq(
+  "com.adrianhurt" %% "play-bootstrap" % "1.1-P25-B3",
+  "org.webjars" % "font-awesome" % "4.7.0",
+  "org.webjars" % "bootstrap-datetimepicker" % "2.4.2"
+)
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.36"
 
