@@ -8,6 +8,19 @@ import play.api.libs.mailer.MailerClient;
 import play.libs.mailer.Email;
 import play.mvc.Controller;
 
+
+
+/**
+ * @Inject
+ *  private EmailController emailer;
+ *
+ *  //emailer.sendEmail(recipients, message)
+ *
+ *  TODO, write a better documentation and should we make this as service or controller?
+ *
+ * @author jason
+ *
+ */
 public class EmailController extends Controller {
 	
 	@Inject MailerClient mailerClient;
