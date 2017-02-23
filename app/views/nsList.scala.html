@@ -73,6 +73,7 @@
                     @header("emailRecipients", "Email recipients")
                     @header("nsAdded", "NS added")
                     @header("lastSend", "Alert last send")
+                    @header("sendCondition", "Sending condition")
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +121,13 @@
                                 <em>0</em>
                             } else {
                                 @ns.getLastSend()
+                            }
+                        </td>
+                        <td>
+                            @if(ns.getSendCondition() == null) {
+                                <em>0</em>
+                            } else {
+                                @ns.getSendCondition()
                             }
                         </td>
                     </tr>
