@@ -1,5 +1,6 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/2.5.x/JavaRouting
 # ~~~~
 
 # Home page
@@ -52,6 +53,9 @@ POST    /ns/:id                   controllers.Notification.update(id:Long)
 
 # delete
 POST    /ns/:id/delete        controllers.Notification.delete(id:Long)
+
+# ns hit
+POST /ns/hit/                      controllers.NotificationHit.hit()
 
 ####################
 
