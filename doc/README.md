@@ -26,3 +26,11 @@
 * i need assistance (about this project), how to contact you?
 
   yes, you can email me or leave me a message.
+
+* how do you include jquery,boostrap,awesomefont to your project?
+
+  see http://adrianhurt.github.io/play-bootstrap/
+
+* how does the system interface to the datastore?
+
+  using orm, see http://ebean-orm.github.io/docs/
