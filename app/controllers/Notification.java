@@ -85,6 +85,7 @@ public class Notification extends Controller {
 				savedNS.setnKey(newNS.getnKey());
 				savedNS.setnValue(newNS.getnValue());
 				savedNS.setEmailRecipients(newNS.getEmailRecipients());
+				savedNS.setSendCondition(newNS.getSendCondition());
 
 				savedNS.update();
 				flash("success", "Notification Specification" + nsForm.get().getnKey() + " has been updated");
