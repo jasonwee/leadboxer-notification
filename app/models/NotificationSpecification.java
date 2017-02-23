@@ -1,8 +1,34 @@
+/*
+ * Copyright (c) 2014 - 2017, LeadBoxer and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  LeadBoxer designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by LeadBoxer in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact LeadBoxer, Herengracht 182 Amsterdam, Noord-Holland 1016 BR
+ * Netherlands or visit www.leadboxer.com if you need additional information or
+ * have any questions.
+ */
+
 package models;
 
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -12,23 +38,40 @@ import com.avaje.ebean.PagedList;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
+/**
+ * Notification Specification is user define requirement that when requirement is met, certain actions is taken
+ * ns is short for notification specification
+ *
+ * @author jason
+ *
+ */
 @Entity
 public class NotificationSpecification extends Model {
 
+	// uuid http://ebean-orm.github.io/docs/mapping/jpa/id
+	// id signify this ns
 	@Id
 	public Long id;
 	
+	// the key for the notification specification, currently support most_likely_company, li_industry and original_url
 	@Constraints.Required
+	@Column(length=64)
 	public String nKey;
 	
 	// value is a reserved keyword, so prepend n
+	// value associated with the key mentioned above
 	@Constraints.Required
+	@Column(length=64)
 	public String nValue;
 	
+	// in mysql , default length is varchar(255)
+	// with comma separated
 	@Constraints.Required
 	public String emailRecipients;
 	
+	// length of 100 because leadboxer has that defined.
 	@Constraints.Required
+	@Column(length=100)
 	public String datasetId;
 	
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -40,6 +83,8 @@ public class NotificationSpecification extends Model {
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date lastSend;
 	
+	// when n = 30, it means every 30seconds, send once. for n = 86400, means everyday only send once.
+	// we use string because we can defined complex condition in the next improvement.
 	// n=30
 	// n=86400
 	@Constraints.Required
@@ -132,10 +177,22 @@ public class NotificationSpecification extends Model {
 				.findPagedList();
 	}
 	
+	/**
+	 * find a list of ns by the datasetId
+	 *
+	 * @param datasetId
+	 *
+	 * @return
+	 */
 	public static List<NotificationSpecification> byDataset(String datasetId) {
 		return find.where().eq("datasetId", datasetId).findList();
 	}
 	
+	/**
+	 * return distinct datasetId currently configured.
+	 *
+	 * @return a list of datasetId in NotificationSpecification
+	 */
 	public static List<NotificationSpecification> distinctDatasets() {
 		return find.where().setDistinct(true).select("datasetId").findList();
 	}
