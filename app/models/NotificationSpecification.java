@@ -1,13 +1,10 @@
 package models;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.joda.time.DateTime;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
@@ -34,14 +31,20 @@ public class NotificationSpecification extends Model {
 	@Constraints.Required
 	public String datasetId;
 	
-	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date nsAdded;
+	// TODO, we should change from date to either of the following but need to test if it work with mysql
+	// java.time.LocalDateTime
+	// org.joda.time.DateTime
 
-	// TODO tested this does not work.
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date lastSend;
 	
+	// n=30
+	// n=86400
+	@Constraints.Required
+	public String sendCondition;
+
 	public Long getId() {
 		return id;
 	}
@@ -98,11 +101,19 @@ public class NotificationSpecification extends Model {
 		this.lastSend = lastSend;
 	}
 
+	public String getSendCondition() {
+		return sendCondition;
+	}
+
+	public void setSendCondition(String sendCondition) {
+		this.sendCondition = sendCondition;
+	}
+
 	@Override
 	public String toString() {
 		return "NotificationSpecification [id=" + id + ", nKey=" + nKey + ", nValue=" + nValue + ", emailRecipients="
 				+ emailRecipients + ", datasetId=" + datasetId + ", nsAdded=" + nsAdded + ", lastSend=" + lastSend
-				+ "]";
+				+ ", sendCondition=" + sendCondition + "]";
 	}
 
 	public static Find<Long, NotificationSpecification> find = new Find<Long, NotificationSpecification>() {};
@@ -128,5 +139,12 @@ public class NotificationSpecification extends Model {
 	public static List<NotificationSpecification> distinctDatasets() {
 		return find.where().setDistinct(true).select("datasetId").findList();
 	}
+	
+	// TODO how to test this other than going through controller? we need a unit test
+	// findUnique() throws NonUniqueResultException, should we handle this?
+	public static NotificationSpecification getNotificationSpecification(String datasetId, String key, String value) {
+		return find.where().eq("datasetId", datasetId).eq("nKey", key).eq("nValue", value).findUnique();
+	}
 
+	
 }
