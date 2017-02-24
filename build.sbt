@@ -6,7 +6,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 scalaVersion := "2.11.8"
 
-libraryDependencies += javaJpa
+//libraryDependencies += javaJpa
 
 libraryDependencies += jdbc
 
@@ -14,7 +14,7 @@ libraryDependencies += "org.mockito" % "mockito-core" % "2.1.0"
 
 libraryDependencies += javaWs
 
-libraryDependencies += "org.hibernate" % "hibernate-core" % "5.2.5.Final"
+//libraryDependencies += "org.hibernate" % "hibernate-core" % "5.2.5.Final"
 
 // see http://adrianhurt.github.io/play-bootstrap/
 libraryDependencies ++= Seq(
