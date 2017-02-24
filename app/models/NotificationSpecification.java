@@ -75,12 +75,14 @@ public class NotificationSpecification extends Model {
 	public String datasetId;
 	
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(columnDefinition = "datetime") // we use this because mysql 5.1 cannto accept default datetime(6)
 	public Date nsAdded;
 	// TODO, we should change from date to either of the following but need to test if it work with mysql
 	// java.time.LocalDateTime
 	// org.joda.time.DateTime
 
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Column(columnDefinition = "datetime") // we use this because mysql 5.1 cannto accept default datetime(6)
 	public Date lastSend;
 	
 	// when n = 30, it means every 30seconds, send once. for n = 86400, means everyday only send once.
