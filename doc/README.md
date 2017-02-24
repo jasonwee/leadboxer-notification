@@ -34,3 +34,8 @@
 * how does the system interface to the datastore?
 
   using orm, see http://ebean-orm.github.io/docs/
+
+* why when i change the configuration in the application conf file, i dont see
+  the changes?
+
+  restart your application
