@@ -26,9 +26,11 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import models.NotificationData;
 import play.api.libs.mailer.MailerClient;
 import play.libs.mailer.Email;
 import play.mvc.Controller;
@@ -54,14 +56,30 @@ public class EmailController extends Controller {
 	
 	@Inject MailerClient mailerClient;
 	
-	public String sendEmail(List<String> recipients, String message) {
+	public String sendEmail(List<String> recipients, NotificationData nd, Map<String, String> extra) {
 		Email email = new Email();
-		email.setSubject("test email");
+		email.setSubject(String.format(String.format("LeadBoxer Notification Hit - %s - %s", nd.key, nd.value)));
 		email.setFrom("<noreply@leadboxer.com>");
 		recipients.forEach((e) -> email.addTo(e));
+		String message = String.format("%s Hit%n%s : %s%n%nHit Timestamp : %s", extra.getOrDefault("isInitial", "Recurrent"), nd.key, nd.value, nd.hitTimestamp);
 		email.setBodyText(message);
 		String id = mailerClient.send(email);
 		return id;
+
+		/*
+		 *  Initial/Recurrent Hit
+		 *  nd.key : nd.value
+		 *
+		 *  hit timestamp : nd.hitTimestamp
+		 */
+	}
+
+	public static void main(String[] args) {
+		boolean isInitial = false;
+
+		String message = String.format("%s Hit%n%s : %s%n%nHit Timestamp : %s", isInitial ? "Initial" : "Recurrent", "most_likely_company", "amd", "2017 - 02 - 27 21:16:00");
+
+		System.out.println(message);
 	}
 	
 
