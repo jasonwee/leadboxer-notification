@@ -25,31 +25,25 @@
 
 package controllers;
 
-import java.time.Duration;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import actors.HelloActor;
-import actors.HelloActorProtocol.SayHello;
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.pattern.Patterns;
+import models.NotificationData;
 import models.NotificationSpecification;
 import play.Logger;
 import play.libs.Json;
-import play.libs.concurrent.HttpExecution;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.compat.java8.FutureConverters;
 
 /**
  * NotificationHit controller managed hits from logserver and process the hit accordingly.
@@ -57,62 +51,26 @@ import scala.compat.java8.FutureConverters;
  * @author jason
  *
  */
-@Singleton
 public class NotificationHit extends Controller {
 
-   final ActorRef helloActor;
+	@Inject
+	private EmailController emailer;
 
-   @Inject
-   private EmailController emailer;
+	public CompletionStage<Result> hit() {
+		JsonNode hitJson = request().body().asJson();
 
+		CompletionStage<Result> response = CompletableFuture
+				.supplyAsync(() -> processNotificationSpecificationHit(hitJson))
+				.thenApply((result) -> ok(Json.toJson(result)));
 
-   // this is akka
-   @Inject
-   public NotificationHit(ActorSystem system) {
-      helloActor = system.actorOf(HelloActor.props);
-   }
-
-   // this is akka
-   // this is non block action, means the client will be block but not this server.
-   public CompletionStage<Result> sayHello(String name) {
-      return FutureConverters.toJava(Patterns.ask(helloActor, new SayHello(name), 1000))
-            .thenApply(response -> ok((String) response));
-   }
-
-   // this is akka or http async
-   // this is non block action, means the client will be block but not this server.
-   public CompletionStage<Result> index(String name) {
-      CompletableFuture f = CompletableFuture.supplyAsync(() -> longComputation(name));
-
-      // how to cancel
-      //f.cancel(true);
-
-      //https://dzone.com/articles/implementing-java-8-0
-      // http://www.deadcoderising.com/java8-writing-asynchronous-code-with-completablefuture/
-      // should take a look
-      f.exceptionally(ex -> new Result(400));
-
-      return CompletableFuture.supplyAsync(() -> longComputation(name)).thenApply((Integer i ) -> ok ("Got " +i ));
-   }
-
-   public CompletionStage<Result> hit() {
-      JsonNode hitJson = request().body().asJson();
-
-      CompletionStage<Result> response = CompletableFuture.supplyAsync(() -> processNotificationSpecificationHit(hitJson)).thenApply((result) -> ok(Json.toJson(result)));
-
-      return response;
-   }
+		return response;
+	}
 
    /**
     * TODO
     * * email fail send 2 times, we should put into a queue and let another service to pick up and email out again.
     * * timeout?
-    * * split akka code and http async
     *
-    * 23.Feb 7:02:32,336 INFO  HTTPRequest [post]: sending nd {"dbTimestamp":"","hitTimestamp":"2017-02-23 07:02:32",
-     * "datasetId":"e2d1c24722e8a52390a42be6e89f7a65","notificationServer":null,"UUID":"",
-     *   "logServer":"gl04.opentracker.net","value":"Bae Systems","key":"most_likely_company"}
-     * 23.Feb 7:02:32,418 INFO  HTTPRequest [post]: result -> {"status":"ok"}
      *
      * curl -XPOST -H "Content-Type: application/json" --data @notification-hit.json 'http://localhost:9001/ns/hit/'
      *
@@ -121,16 +79,20 @@ public class NotificationHit extends Controller {
     */
    public ObjectNode processNotificationSpecificationHit(JsonNode hitJson) {
       ObjectNode result = Json.newObject();
+      NotificationData nd = new NotificationData();
 
-      Logger.info("bingo {}", hitJson.toString());
+      Logger.info("notification hit receive {}", hitJson.toString());
 
-      String datasetId = hitJson.findPath("datasetId").asText();
-      String key = hitJson.findPath("key").asText();
-      String value = hitJson.findPath("value").asText();
+      try {
+         nd = NotificationData.toNotificationData(hitJson.toString());
+      } catch (IOException e) {
+         Logger.error("unexpected json");
+         return result.put("status", "unexpected json");
+      }
 
       // check in ns if the object still available, if not available, log it and return
       // datasetid, key, value
-      NotificationSpecification nsHit = NotificationSpecification.getNotificationSpecification(datasetId, key, value);
+      NotificationSpecification nsHit = NotificationSpecification.getNotificationSpecification(nd.datasetId, nd.key, nd.value);
 
       if (nsHit == null) {
          Logger.warn("ns has been removed? stale hit {}", hitJson.toString());
@@ -147,12 +109,14 @@ public class NotificationHit extends Controller {
       Logger.info("email {} lastSend {} condition {}", email, lastSend, condition);
       if (lastSend == null) {  // first time
          String emails[] = email.split(",");
-         emailer.sendEmail(Arrays.asList(emails), "send");
+         Map<String, String> extra = new HashMap<>();
+         extra.put("isInitial", "Initial");
+         String emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
          NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
          savedNS.setLastSend(new Date());
          savedNS.update();
-         result.put("status", "email sent");
-      } else { // recurrrent
+         result.put("status", String.format("email %s sent", emailId));
+      } else { // Recurrent
          Date now = new Date();
          String conditions[] = condition.split("=");
          // TODO simple way of getting based on splitting equal sign. it should more robust:
@@ -164,57 +128,21 @@ public class NotificationHit extends Controller {
          long padLastSend = lastSend.getTime() + duration * 1000L;
          if (now.getTime() > padLastSend) { // when the time now is greater than the last send + the condition
             String emails[] = email.split(",");
-            emailer.sendEmail(Arrays.asList(emails), "send recurrent");
+            Map<String, String> extra = new HashMap<>();
+            extra.put("isInitial", "Recurrent");
+            String emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
             NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
             savedNS.setLastSend(new Date());
             savedNS.update();
-            result.put("status", "email sent");
+            result.put("status", String.format("email %s sent", emailId));
          } else { // when the time now is less than or eq the last send + the condition
-            result.put("status", "email not sent");
+            result.put("status", "email not sent as recurrent condition not satisfy");
          }
       }
 
 
       // return a valid json response.
-
       return result;
    }
-
-   // ------------------------------------------------------------------------------------------------------------------------
-
-   private Executor myThreadPool = null;
-
-   // this is http async becuase from httpexecution context, it supply an executor.
-   public CompletionStage<Result> index2(String name) {
-      // Wrap an existing thread pool, using the context from the current thread
-      Executor myEc = HttpExecution.fromThread(myThreadPool);
-      return CompletableFuture.supplyAsync(() -> longComputation(name), myEc)
-            .thenApplyAsync(i -> ok("Got result: " + i), myThreadPool);
-   }
-
-   // timeout sample
-   class MyClass implements play.libs.concurrent.Timeout {
-       CompletionStage<Double> callWithOneSecondTimeout() {
-           return timeout(computePIAsynchronously(), Duration.ofSeconds(1));
-       }
-   }
-
-    private static CompletionStage<Double> computePIAsynchronously() {
-       return CompletableFuture.completedFuture(Math.PI);
-   }
-
-
-   Integer longComputation(String name) {
-      try {
-         Thread.sleep(5000);
-         //http://api.leadboxer.com/api/management/sendEmail.jsp?to=jason@opentracker.net&from=noreply@leadboxer.com&toName=Jason&replyTo=noreply@leadboxer.com&subject=test from notification server&text=this is a test
-      } catch (InterruptedException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      return new Integer(1);
-   }
-
-
 
 }
