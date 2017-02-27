@@ -85,6 +85,10 @@ public class NotificationSpecification extends Model {
 	@Column(columnDefinition = "datetime") // we use this because mysql 5.1 cannto accept default datetime(6)
 	public Date lastSend;
 	
+	/*
+	 * logic on how often email send. for instance, one email send to recipient within N minutes or one email send when N of
+	 * hits happened.
+	 */
 	// when n = 30, it means every 30seconds, send once. for n = 86400, means everyday only send once.
 	// we use string because we can defined complex condition in the next improvement.
 	// n=30
