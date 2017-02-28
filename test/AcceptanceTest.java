@@ -9,6 +9,7 @@ public class AcceptanceTest {
     /**
      * in this example we just check if the welcome page is being shown
      */
+	/*
     @Test
     public void test() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
@@ -16,5 +17,5 @@ public class AcceptanceTest {
             assertThat(browser.pageSource(), containsString("Add Person"));
         });
     }
-
+    */
 }

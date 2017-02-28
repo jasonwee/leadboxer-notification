@@ -19,6 +19,7 @@ import static play.test.Helpers.*;
  */
 public class IntegrationTest extends WithServer {
 
+	/*
     @Test
     public void testInServerThroughUrl() throws Exception {
         // Tests using a scoped WSClient to talk to the server through a port.
@@ -43,5 +44,6 @@ public class IntegrationTest extends WithServer {
         final String body = contentAsString(result);
         assertThat(body, containsString("Add Person"));
     }
+    */
 
 }
