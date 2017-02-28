@@ -61,7 +61,7 @@ public class NotificationSpecification extends Model {
 	// value is a reserved keyword, so prepend n
 	// value associated with the key mentioned above
 	@Constraints.Required
-	@Column(length=64)
+	@Column(length=512)
 	public String nValue;
 	
 	// in mysql , default length is varchar(255)
