@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.NotificationSpecification;
+import play.Configuration;
 import play.Logger;
 import play.libs.Json;
 import play.libs.ws.WSClient;
@@ -57,6 +58,8 @@ import play.mvc.Result;
 public class LogServer extends Controller {
 
    @Inject private WSClient ws;
+
+   @Inject private Configuration config;
 
    // for logserver to get all the notification
    public Result listAll() {
@@ -164,9 +167,9 @@ public class LogServer extends Controller {
     * @param datasetId
     */
    public void updateDataset(String datasetId) {
-      Logger.info("pushing to {}", datasetId);
-      // TODO Change url later
-      WSRequest request = ws.url("http://log-dev.leadboxer.com/notification")
+      String url = config.getString("leadboxer.logserver.notification_url");
+      Logger.info("pushing {} to url {}", datasetId, url);
+      WSRequest request = ws.url(url)
             .setRequestTimeout(5000)
             .setContentType("application/json");
 
