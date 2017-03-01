@@ -115,7 +115,7 @@ public class Notification extends Controller {
 				savedNS.setSendCondition(newNS.getSendCondition());
 
 				savedNS.update();
-				flash("success", "Notification Specification" + nsForm.get().getnKey() + " has been updated");
+				flash("success", "Notification Specification " + nsForm.get().getnKey() + " has been updated");
 				txn.commit();
 				logServer.updateDataset(nsForm.get().getDatasetId());
 			}
@@ -129,7 +129,7 @@ public class Notification extends Controller {
 	public Result delete(Long id) {
 		String datasetId = NotificationSpecification.find.ref(id).getDatasetId();
 		NotificationSpecification.find.ref(id).delete();
-		flash("success", "NotificationSpecification has been deleted");
+		flash("success", "Notification Specification has been deleted");
 		logServer.updateDataset(datasetId);
 		return GO_LIST;
 	}
