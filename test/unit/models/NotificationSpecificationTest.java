@@ -3,6 +3,7 @@ package unit.models;
 import static play.test.Helpers.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.avaje.ebean.PagedList;
 import com.google.common.collect.ImmutableMap;
 
 import models.NotificationSpecification;
@@ -126,5 +128,24 @@ public class NotificationSpecificationTest extends WithApplication {
 	    });
 	}
 	
+    @Test
+    public void findById() {
+        running(fakeApplication(inMemoryDatabase()), new Runnable() {
+           public void run() {
+               NotificationSpecification ns = NotificationSpecification.find.byId(1l);
+               assertNull(ns);
+           }
+        });
+    }
 
+    @Test
+    public void pagination() {
+        running(fakeApplication(inMemoryDatabase()), new Runnable() {
+           public void run() {
+               PagedList<NotificationSpecification> nss = NotificationSpecification.page(1, 20, "nKey", "ASC", "");
+               assertEquals(0, nss.getTotalPageCount());
+               assertEquals(0, nss.getList().size());
+           }
+        });
+    }
 }
