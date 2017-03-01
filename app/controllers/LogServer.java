@@ -75,7 +75,7 @@ public class LogServer extends Controller {
       boolean enable = false;
 
       if (datasetIds == null | datasetIds.isEmpty()) {
-         // return empty string? TODO need to test
+         // return empty string
          return Json.newObject();
       }
 
