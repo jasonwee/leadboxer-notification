@@ -1,3 +1,5 @@
+package integration;
+
 import org.junit.Test;
 import play.libs.ws.WS;
 import play.libs.ws.WSClient;
@@ -19,15 +21,14 @@ import static play.test.Helpers.*;
  */
 public class IntegrationTest extends WithServer {
 
-	/*
     @Test
-    public void testInServerThroughUrl() throws Exception {
+    public void testHomePage() throws Exception {
         // Tests using a scoped WSClient to talk to the server through a port.
         try (WSClient ws = WS.newClient(this.testServer.port())) {
-            CompletionStage<WSResponse> stage = ws.url("/").get();
+            CompletionStage<WSResponse> stage = ws.url("/ns").get();
             WSResponse response = stage.toCompletableFuture().get();
             String body = response.getBody();
-            assertThat(body, containsString("Add Person"));
+            assertThat(body, containsString("Notification Specification"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -38,12 +39,11 @@ public class IntegrationTest extends WithServer {
         // Tests using the internal application available in the server.
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
-                .uri("/");
+                .uri("/ns");
 
         Result result = route(app, request);
         final String body = contentAsString(result);
-        assertThat(body, containsString("Add Person"));
+        assertThat(body, containsString("Notification Specification"));
     }
-    */
 
 }
