@@ -74,13 +74,4 @@ public class EmailController extends Controller {
 		 */
 	}
 
-	public static void main(String[] args) {
-		boolean isInitial = false;
-
-		String message = String.format("%s Hit%n%s : %s%n%nHit Timestamp : %s", isInitial ? "Initial" : "Recurrent", "most_likely_company", "amd", "2017 - 02 - 27 21:16:00");
-
-		System.out.println(message);
-	}
-	
-
 }
