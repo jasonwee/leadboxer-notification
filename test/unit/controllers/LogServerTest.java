@@ -3,19 +3,43 @@ package unit.controllers;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ImmutableMap;
 
 import static play.mvc.Http.Status.OK;
 import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
 import controllers.LogServer;
+import play.Application;
 import play.mvc.Result;
 import play.test.WithApplication;
 
 
 public class LogServerTest extends WithApplication {
 	
-	  /* TODO this actually get data in the local database, we should use test database but we need to know how.
+	@Override
+	protected Application provideApplication() {
+		// we override default db.default parameter because we want to test.
+        return fakeApplication(ImmutableMap.of(
+                "db.default.driver", "org.h2.Driver",
+                "db.default.url", "jdbc:h2:mem:play;MODE=MYSQL",
+                "db.default.username", "sa",
+                "db.default.password", ""
+            ));
+	}
+
+	@Override
+	public void startPlay() {
+		System.out.println("starting fake application");
+		super.startPlay();
+	}
+
+	@Override
+	public void stopPlay() {
+		System.out.println("stopping fake application");
+		super.stopPlay();
+	}
+	
 	  @Test
 	  public void testListAllisEmpty() {
 	    Result result = new LogServer().listAll();
@@ -30,11 +54,11 @@ public class LogServerTest extends WithApplication {
 		  JsonNode result = new LogServer().getDatasetsFromDS();
 		  assertEquals("{}", result.toString());
 	  }
-	  */
-	  
-	  @Test
+
+	@Test
 	  public void testUpdateDataset() {
-		  // TODO how to test?
+		// TODO how to test this?
+		//new LogServer().updateDataset("123");
 	  }
 	  
 	  /**
