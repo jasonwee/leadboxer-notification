@@ -52,7 +52,7 @@ import com.google.inject.Module;
  */
 public class FunctionalTest {
 
-   /*
+   /* http://stackoverflow.com/questions/28370400/play-framework-use-in-memory-h2-database-for-unit-tests
    @Inject Application application;
 
    @Before
