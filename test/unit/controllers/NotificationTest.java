@@ -4,6 +4,9 @@ import play.test.WithApplication;
 
 import static play.test.Helpers.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import play.test.*;
 import static org.junit.Assert.*;
@@ -34,35 +37,32 @@ public class NotificationTest extends WithApplication {
 		assertEquals("/ns", result.redirectLocation().get()); 
 	}
 	
-	/*
-	 * TODO need to switch to test database because currently guice using mysql render test result invalid.
 	@Test
 	public void listNotificationSpecificationOnTheFirstPage() {
-		Result result = Helpers.route(application, controllers.routes.Notification.list(0, "nKey", "asc", ""));
+		Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nKey", "asc", ""));
 
 		assertEquals(Helpers.OK, result.status());
 		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
 	}
-	*/
 	
-	/*
+	/**
 	 * TODO we can actually insert some sample value and so we can actually test actual filter data.
 	 *
+	 */
 	@Test
 	public void filterNotificationSpecificationByValue() {
-		Result result = Helpers.route(application, controllers.routes.Notification.list(0, "nValue", "asc", "amd"));
+		Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nValue", "asc", "amd"));
 
 		assertEquals(Helpers.OK, result.status());
 		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
 	}
-	*/
 	
 	/* TODO this actually work but we need to change things like configuraiton file use, the lb url and database use. currently
 	 * using persistent database. 
-	 * 
+	 *
     @Test
     public void createANotificationSpecification() {
-        Result result = Helpers.route(application, controllers.routes.Notification.save());
+        Result result = Helpers.route(provideApplication(), controllers.routes.Notification.save());
 
 		assertEquals(Helpers.BAD_REQUEST, result.status());
 
@@ -87,7 +87,7 @@ public class NotificationTest extends WithApplication {
         //data.put("nsAdded", "2017-03-01 17:39:00");
 
         result = Helpers.route(
-            application,
+            provideApplication(),
             Helpers.fakeRequest().bodyForm(data).method("POST").uri(saveUrl)
         );
 
@@ -95,10 +95,9 @@ public class NotificationTest extends WithApplication {
         assertEquals("/ns", result.redirectLocation().get());
         assertEquals("Done! Notification Specification original_url has been created", result.flash().get("success"));
 
-        result = Helpers.route(application, controllers.routes.Notification.list(0, "nKey", "asc", "google"));
+        result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nKey", "asc", "google"));
         assertEquals(Helpers.OK, result.status());
         assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("One notification specification found"));
     }
     */
-
 }
