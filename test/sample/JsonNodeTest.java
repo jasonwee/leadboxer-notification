@@ -1,4 +1,3 @@
-package sample;
 /*
  * Copyright (c) 2014 - 2017, LeadBoxer and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -23,6 +22,8 @@ package sample;
  * Netherlands or visit www.leadboxer.com if you need additional information or
  * have any questions.
  */
+
+package sample;
 
 import static org.junit.Assert.*;
 
