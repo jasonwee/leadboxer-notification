@@ -22,6 +22,7 @@ import com.google.inject.Module;
 
 public class FunctionalTest {
  
+	/*  
 	@Inject Application application;
 
 	@Before
@@ -45,7 +46,9 @@ public class FunctionalTest {
 	public void teardown() {
 	  Helpers.stop(application);
 	}
+	*/
 	
+	/*
 	@Test
 	public void redirectHomePage() {
 		Result result = Helpers.route(application, controllers.routes.Notification.index());
@@ -53,7 +56,10 @@ public class FunctionalTest {
 		assertEquals(Helpers.SEE_OTHER, result.status());
 		assertEquals("/ns", result.redirectLocation().get()); 
 	}
+	*/
 	
+	/*
+	 * TODO need to switch to test database because currently guice using mysql render test result invalid.
 	@Test
 	public void listNotificationSpecificationOnTheFirstPage() {
 		Result result = Helpers.route(application, controllers.routes.Notification.list(0, "nKey", "asc", ""));
@@ -61,10 +67,11 @@ public class FunctionalTest {
 		assertEquals(Helpers.OK, result.status());
 		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
 	}
+	*/
 
-	/**
+	/*
 	 * TODO we can actually insert some sample value and so we can actually test actual filter data.
-	 */
+	 *
 	@Test
 	public void filterNotificationSpecificationByValue() {
 		Result result = Helpers.route(application, controllers.routes.Notification.list(0, "nValue", "asc", "amd"));
@@ -72,6 +79,7 @@ public class FunctionalTest {
 		assertEquals(Helpers.OK, result.status());
 		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
 	}
+	*/
 	
 	/* TODO this actually work but we need to change things like configuraiton file use, the lb url and database use. currently
 	 * using persistent database. 
