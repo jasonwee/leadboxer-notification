@@ -83,7 +83,7 @@ public class NotificationSpecificationTest extends WithApplication {
 	 }
 	 
 	 @Test
-	 public void getNotificationSpecification() {
+	 public void getNotificationSpecification1() {
 		 
 		 /*
 		 Database database = Databases.createFrom(
@@ -103,29 +103,32 @@ public class NotificationSpecificationTest extends WithApplication {
 		 
 		 database.shutdown();
 		 */
+		 
+			/*
+			ClassLoader classLoader = classLoader();
+			Application application = new GuiceApplicationBuilder()
+					//.in(new Environment(new File("/home/jason/work/svn/leadboxer-notification/"), classLoader, Mode.TEST))
+					.in(new Environment(new File("path/to/app"), classLoader, Mode.DEV))
+					.build();
+
+			running(application, () -> {
+				NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("1", "2", "3");
+				System.out.println("here " + ns.toString());
+			});
+			*/
 	 }
 
 	    private ClassLoader classLoader() {
 	        return new URLClassLoader(new URL[0]);
-	    }   
+	    }
 
-	public void getNotificationSpecification1() {
-		/*
-		ClassLoader classLoader = classLoader();
-		Application application = new GuiceApplicationBuilder()
-				//.in(new Environment(new File("/home/jason/work/svn/leadboxer-notification/"), classLoader, Mode.TEST))
-				.in(new Environment(new File("path/to/app"), classLoader, Mode.DEV))
-				.build();
+	@Test
+	public void getNotificationSpecification() {
 
-		running(application, () -> {
-			NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("1", "2", "3");
-			System.out.println("here " + ns.toString());
+		running(fakeApplication(inMemoryDatabase()), () -> {
+			NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("a1d90dccc04df83f26553dc753ed41f2", "foo", "bar");
+			assertNull(ns);
 		});
-		*/
-		running(fakeApplication(inMemoryDatabase("test")), () -> {
-			NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("1", "2", "3");
-	        System.out.println(ns.toString());
-	    });
 	}
 	
     @Test
