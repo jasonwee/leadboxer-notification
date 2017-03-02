@@ -13,7 +13,7 @@ import controllers.NotificationHit;
 import play.Application;
 
 public class NotificationHitTest extends WithApplication {
-   
+
    @Override
    protected Application provideApplication() {
       // we override default db.default parameter because we want to test.
@@ -24,11 +24,11 @@ public class NotificationHitTest extends WithApplication {
        config.put("db.default.password", "");
         return fakeApplication(config);
    }
-   
+
    // TODO how to test
    @Test
    public void testHit() {
-      
+
    }
 
 }

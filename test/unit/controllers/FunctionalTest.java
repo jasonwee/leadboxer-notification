@@ -21,8 +21,8 @@ import com.google.inject.Guice;
 import com.google.inject.Module;
 
 public class FunctionalTest {
- 
-   /*  
+
+   /*
    @Inject Application application;
 
    @Before
@@ -47,15 +47,15 @@ public class FunctionalTest {
      Helpers.stop(application);
    }
    */
-   
-
-   
 
 
 
-   
 
-   
+
+
+
+
+
    /*
    @Test
    public void findById() {
@@ -64,5 +64,5 @@ public class FunctionalTest {
           System.out.println("here : " + ns.toString());
        });
    }
-   */   
+   */
 }

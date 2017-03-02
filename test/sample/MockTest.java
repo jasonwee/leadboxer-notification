@@ -10,7 +10,7 @@ import org.junit.Test;
 
 /**
  * https://github.com/mockito/mockito
- * 
+ *
  * @author jason
  *
  */
@@ -18,7 +18,7 @@ public class MockTest {
 
     @Test
      public void testMock() {
-       
+
       // Create and train mock
       List<String> mockedList = mock(List.class);
       when(mockedList.get(0)).thenReturn("first");

@@ -56,7 +56,7 @@ public class IntegrationTest extends WithServer {
         final String body = contentAsString(result);
         assertThat(body, containsString("Notification Specification"));
     }
-    
+
     /**
      * we need to find out how to insert sample data and so we can uncomment the following tests.
      */
@@ -68,7 +68,7 @@ public class IntegrationTest extends WithServer {
             assertThat(browser.$("header h1").first().getText(), equalTo("Play application — Notification Specification"));
             assertThat(browser.$("section h1").first().getText(), equalTo("No notification specifications found"));
             //assertThat(browser.$("section h1").first().getText(), equalTo("7 notification specifications found"));
-            
+
             //assertThat(browser.$("#pagination li.current").first().getText(), equalTo("Displaying 1 to 7 of 7"));
             //browser.$("#pagination li.next a").click();
 

@@ -16,7 +16,7 @@ import play.test.WithApplication;
 
 
 public class LogServerTest extends WithApplication {
-   
+
    @Override
    protected Application provideApplication() {
       // we override default db.default parameter because we want to test.
@@ -39,7 +39,7 @@ public class LogServerTest extends WithApplication {
       System.out.println("stopping fake application");
       super.stopPlay();
    }
-   
+
      @Test
      public void testListAllisEmpty() {
        Result result = new LogServer().listAll();
@@ -48,7 +48,7 @@ public class LogServerTest extends WithApplication {
        assertEquals("UTF-8", result.charset().get());
        assertTrue(contentAsString(result).equals("{}"));
      }
-     
+
      @Test
      public void testGetDatasetsFromDSIsEmpty() {
         JsonNode result = new LogServer().getDatasetsFromDS();
@@ -60,7 +60,7 @@ public class LogServerTest extends WithApplication {
       // TODO how to test this?
       //new LogServer().updateDataset("123");
      }
-     
+
      /**
       * output of the assertion should match the following
       * {

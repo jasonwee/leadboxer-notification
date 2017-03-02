@@ -19,9 +19,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 public class EmailControllerTest extends WithApplication {
-   
+
    @Inject EmailController email_agent;
-   
+
 
    @Override
    protected Application provideApplication() {
@@ -33,8 +33,8 @@ public class EmailControllerTest extends WithApplication {
                 "play.mailer.mock", "yes"
             ));
    }
-   
-   // TODO why npe on line 48? 
+
+   // TODO why npe on line 48?
    //@Test
    public void testSendEmail() {
 
@@ -48,7 +48,7 @@ public class EmailControllerTest extends WithApplication {
       String res = email_agent.sendEmail(recipients, nd, extra);
       System.out.println(res);
    }
-   
+
    @Test
    public void testEmailOutput() {
       boolean isInitial = false;

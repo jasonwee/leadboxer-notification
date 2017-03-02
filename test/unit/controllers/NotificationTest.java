@@ -17,7 +17,7 @@ import play.Application;
 import play.mvc.Result;
 
 public class NotificationTest extends WithApplication {
-   
+
    @Override
    protected Application provideApplication() {
       // we override default db.default parameter because we want to test.
@@ -28,15 +28,15 @@ public class NotificationTest extends WithApplication {
                 "db.default.password", ""
             ));
    }
-   
+
    @Test
    public void redirectHomePage() {
       Result result = Helpers.route(provideApplication(), controllers.routes.Notification.index());
 
       assertEquals(Helpers.SEE_OTHER, result.status());
-      assertEquals("/ns", result.redirectLocation().get()); 
+      assertEquals("/ns", result.redirectLocation().get());
    }
-   
+
    @Test
    public void listNotificationSpecificationOnTheFirstPage() {
       Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nKey", "asc", ""));
@@ -44,7 +44,7 @@ public class NotificationTest extends WithApplication {
       assertEquals(Helpers.OK, result.status());
       assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
    }
-   
+
    /**
     * TODO we can actually insert some sample value and so we can actually test actual filter data.
     *
@@ -56,9 +56,9 @@ public class NotificationTest extends WithApplication {
       assertEquals(Helpers.OK, result.status());
       assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
    }
-   
+
    /* TODO this actually work but we need to change things like configuraiton file use, the lb url and database use. currently
-    * using persistent database. 
+    * using persistent database.
     *
     @Test
     public void createANotificationSpecification() {
@@ -67,7 +67,7 @@ public class NotificationTest extends WithApplication {
       assertEquals(Helpers.BAD_REQUEST, result.status());
 
         Map<String,String> data = new HashMap<>();
-        data.put("datasetId", "a1d90dccc04df83f26553dc753ed41f2");   
+        data.put("datasetId", "a1d90dccc04df83f26553dc753ed41f2");
         data.put("nKey", "most_likely_company");
         data.put("nValue", "google");
         data.put("emailRecipients", "foo@bar.com");

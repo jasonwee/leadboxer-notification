@@ -30,15 +30,15 @@ import play.test.WithApplication;
 
 
 /**
- * 
+ *
  * @author jason
  *
  */
 public class NotificationSpecificationTest extends WithApplication {
-   
+
     @Test
      public void testMock() {
-       
+
       // Create and train mock
       List<String> mockedList = mock(List.class);
       when(mockedList.get(0)).thenReturn("first");
@@ -49,22 +49,22 @@ public class NotificationSpecificationTest extends WithApplication {
       // verify interaction
       verify(mockedList).get(0);
      }
-    
+
      public void testMock1() {
-       
+
       // Create and train mock
        NotificationSpecification ns = new NotificationSpecification();
       NotificationSpecification mockedList = mock(NotificationSpecification.class);
       when(mockedList.getNotificationSpecification("1", "2", "3")).thenReturn(ns);
-      
+
 
       NotificationSpecification mytest = mockedList.getNotificationSpecification("1", "2", "3");
       System.out.println(mytest.toString());
-      
+
      }
-    
-    
-    
+
+
+
     @Test
     public void testIsAdmin() {
        /*
@@ -73,7 +73,7 @@ public class NotificationSpecificationTest extends WithApplication {
       Set<Role> roles = new HashSet<Role>();
       roles.add(new Role("ADMIN"));
       when(repositoryMock.findUserRoles(any(User.class))).thenReturn(roles);
-      
+
       // Test Service
       UserService userService = new UserService(repositoryMock);
       User user = new User(1, "Johnny Utah");
@@ -81,8 +81,8 @@ public class NotificationSpecificationTest extends WithApplication {
       verify(repositoryMock).findUserRoles(user);
       */
     }
-    
-    
+
+
     /*
         @Test
     public void getNotificationSpecification1() {
@@ -91,7 +91,7 @@ public class NotificationSpecificationTest extends WithApplication {
              "com.mysql.jdbc.Driver",
               "jdbc:mysql://localhost/test"
              );
-       
+
        Database inMem = Databases.inMemory(
                  "mydatabase",
                  ImmutableMap.of(
@@ -101,10 +101,10 @@ public class NotificationSpecificationTest extends WithApplication {
                          "logStatements", true
                  )
          );
-       
+
        database.shutdown();
        */
-       
+
          /*
          ClassLoader classLoader = classLoader();
          Application application = new GuiceApplicationBuilder()
@@ -122,7 +122,7 @@ public class NotificationSpecificationTest extends WithApplication {
        private ClassLoader classLoader() {
            return new URLClassLoader(new URL[0]);
        }
-              */  
+              */
 
    @Test
    public void testPagination() {
@@ -134,7 +134,7 @@ public class NotificationSpecificationTest extends WithApplication {
          }
       });
    }
-   
+
    @Test
    public void testByDatataset() {
       running(fakeApplication(inMemoryDatabase()), () -> {
@@ -159,7 +159,7 @@ public class NotificationSpecificationTest extends WithApplication {
          assertNull(ns);
       });
    }
-   
+
     @Test
     public void findById() {
         running(fakeApplication(inMemoryDatabase()), new Runnable() {

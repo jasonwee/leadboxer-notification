@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
 /**
- * 
+ *
  * {
  *        "dataset": {
  *          "datasetId": "a1d90dccc04df83f26553dc753ed41f2",
@@ -54,15 +54,15 @@ import play.libs.Json;
  *          }
  *        }
  *      }
- *      
+ *
  * @author jason
  *
  */
 public class JsonNodeTest {
-   
+
    /**
     * to see the output, uncomment the @
-    * 
+    *
      * {
      *        "dataset": {
      *          "datasetId": "a1d90dccc04df83f26553dc753ed41f2",
@@ -92,14 +92,14 @@ public class JsonNodeTest {
       notifications.put("most_likely_company", "google");
       notifications.putArray("li_industry").add("Defense & Space").add("foo");
       notifications.putArray("original_url").add("https://www.google.com").add("https://www.leadboxer.com");
-         
-      
+
+
       ObjectMapper mapper = new ObjectMapper();
       mapper.enable(SerializationFeature.INDENT_OUTPUT);
       String ident = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
       System.out.println(ident);
    }
-   
+
    /**
     * to see the output, uncomment the @
     *        {
@@ -142,11 +142,11 @@ public class JsonNodeTest {
     */
    //@Test
    public void formAndDisplayIdentJsonForDatasets() throws JsonProcessingException {
-      
+
       ObjectMapper om = new ObjectMapper();
       ObjectNode root = Json.newObject();
       ArrayNode datasets = root.putArray("datasets");
-      
+
       // a1d90dccc04df83f26553dc753ed41f2
       ObjectNode dataset = om.createObjectNode();
       dataset.put("datasetId", "a1d90dccc04df83f26553dc753ed41f2");
@@ -156,7 +156,7 @@ public class JsonNodeTest {
       notifications.put("li_industry", "Defense & Space");
       notifications.putArray("original_url").add("http://www.leadboxer.com/feature").add("http://www.leadboxer.com/pricing");
       datasets.add(dataset);
-      
+
       // e2d1c24722e8a52390a42be6e89f7a65
       dataset = om.createObjectNode();
       dataset.put("datasetId", "e2d1c24722e8a52390a42be6e89f7a65");
@@ -166,15 +166,15 @@ public class JsonNodeTest {
       notifications.put("li_industry", "financial2");
       notifications.putArray("original_url").add("http://www.opentracker.net/feature").add("http://www.opentracker.net/pricing");
       datasets.add(dataset);
-      
+
       System.out.println(datasets.findParents("datasetId"));
-      
-      
+
+
       System.out.println(datasets.findValues("datasetId"));
-      
+
       System.out.println(datasets.findValuesAsText("datasetId").contains("a1d90dccc04df83f26553dc753ed41f2"));
-      
-      
+
+
       ObjectMapper mapper = new ObjectMapper();
       mapper.enable(SerializationFeature.INDENT_OUTPUT);
       String ident = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
