@@ -203,7 +203,6 @@ public class NotificationSpecification extends Model {
 		return find.where().setDistinct(true).select("datasetId").findList();
 	}
 	
-	// TODO how to test this other than going through controller? we need a unit test
 	// findUnique() throws NonUniqueResultException, should we handle this?
 	public static NotificationSpecification getNotificationSpecification(String datasetId, String key, String value) {
 		return find.where().eq("datasetId", datasetId).eq("nKey", key).eq("nValue", value).findUnique();
