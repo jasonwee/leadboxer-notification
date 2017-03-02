@@ -15,6 +15,7 @@ import play.test.WithApplication;
 
 public class LogServerTest extends WithApplication {
 	
+	  /* TODO this actually get data in the local database, we should use test database but we need to know how.
 	  @Test
 	  public void testListAllisEmpty() {
 	    Result result = new LogServer().listAll();
@@ -29,6 +30,7 @@ public class LogServerTest extends WithApplication {
 		  JsonNode result = new LogServer().getDatasetsFromDS();
 		  assertEquals("{}", result.toString());
 	  }
+	  */
 	  
 	  @Test
 	  public void testUpdateDataset() {
