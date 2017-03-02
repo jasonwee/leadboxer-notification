@@ -60,15 +60,4 @@ public class NotificationData {
       return mapper.readValue(json, NotificationData.class);
    }
 
-   public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-      String nsString = "{ \"dbTimestamp\":\"\", \"hitTimestamp\":\"2017-02-23 07:02:32\", \"datasetId\":\"e2d1c24722e8a52390a42be6e89f7a65\", \"notificationServer\":null, \"UUID\":\"\", \"logServer\":\"gl04.opentracker.net\", \"value\":\"Bae Systems\", \"key\":\"most_likely_company\" }";
-
-      NotificationData nd = NotificationData.toNotificationData(nsString);
-
-      //System.out.println(nd.hitTimestamp);
-
-      System.out.println(nd.toJsonString());
-   }
-
-
 }
