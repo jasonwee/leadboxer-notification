@@ -31,6 +31,7 @@ import static play.test.Helpers.*;
 import static org.junit.Assert.*;
 
 /**
+ * http://www.scala-sbt.org/release/docs/Testing.html
  *
  * @author jason
  *
