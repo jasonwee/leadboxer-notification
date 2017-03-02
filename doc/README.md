@@ -39,3 +39,8 @@
   the changes?
 
   restart your application
+
+* i see test codes but i dont see where you actually test it. do you actually
+  run tests?
+
+  yes, leadboxer is kind enough to provide private testing infrastructure and we use `sbt test` to run all the tests. thus no need travis but if you want, take a look at https://github.com/playframework/play-java-ebean-example/blob/master/.travis.yml
