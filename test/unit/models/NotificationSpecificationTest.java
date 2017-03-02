@@ -82,10 +82,11 @@ public class NotificationSpecificationTest extends WithApplication {
 	   */
 	 }
 	 
-	 @Test
+	 
+	 /*
+	 	 @Test
 	 public void getNotificationSpecification1() {
-		 
-		 /*
+
 		 Database database = Databases.createFrom(
 				 "com.mysql.jdbc.Driver",
 			     "jdbc:mysql://localhost/test"
@@ -115,15 +116,43 @@ public class NotificationSpecificationTest extends WithApplication {
 				NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("1", "2", "3");
 				System.out.println("here " + ns.toString());
 			});
-			*/
+
 	 }
 
 	    private ClassLoader classLoader() {
 	        return new URLClassLoader(new URL[0]);
 	    }
+	  			*/  
 
 	@Test
-	public void getNotificationSpecification() {
+	public void testPagination() {
+		running(fakeApplication(inMemoryDatabase()), new Runnable() {
+			public void run() {
+				PagedList<NotificationSpecification> nss = NotificationSpecification.page(1, 20, "nKey", "ASC", "");
+				assertEquals(0, nss.getTotalPageCount());
+				assertEquals(0, nss.getList().size());
+			}
+		});
+	}
+	
+	@Test
+	public void testByDatataset() {
+		running(fakeApplication(inMemoryDatabase()), () -> {
+			List<NotificationSpecification> lists = NotificationSpecification.byDataset("a1d90dccc04df83f26553dc753ed41f2");
+			assertEquals(0, lists.size());
+		});
+	}
+
+	@Test
+	public void testDistinctDatasets() {
+		running(fakeApplication(inMemoryDatabase()), () -> {
+			List<NotificationSpecification> lists = NotificationSpecification.distinctDatasets();
+			assertEquals(0, lists.size());
+		});
+	}
+
+	@Test
+	public void testGetNotificationSpecification() {
 
 		running(fakeApplication(inMemoryDatabase()), () -> {
 			NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("a1d90dccc04df83f26553dc753ed41f2", "foo", "bar");
@@ -141,14 +170,4 @@ public class NotificationSpecificationTest extends WithApplication {
         });
     }
 
-    @Test
-    public void pagination() {
-        running(fakeApplication(inMemoryDatabase()), new Runnable() {
-           public void run() {
-               PagedList<NotificationSpecification> nss = NotificationSpecification.page(1, 20, "nKey", "ASC", "");
-               assertEquals(0, nss.getTotalPageCount());
-               assertEquals(0, nss.getList().size());
-           }
-        });
-    }
 }
