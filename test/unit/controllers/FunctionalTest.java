@@ -22,47 +22,47 @@ import com.google.inject.Module;
 
 public class FunctionalTest {
  
-	/*  
-	@Inject Application application;
+   /*  
+   @Inject Application application;
 
-	@Before
-	public void setup() {
-	  Module testModule = new AbstractModule() {
-	    @Override
-	    public void configure() {
-	      // Install custom test binding here
-	    }
-	  };
+   @Before
+   public void setup() {
+     Module testModule = new AbstractModule() {
+       @Override
+       public void configure() {
+         // Install custom test binding here
+       }
+     };
 
-	  GuiceApplicationBuilder builder = new GuiceApplicationLoader()
-	      .builder(new ApplicationLoader.Context(Environment.simple()))
-	      .overrides(testModule);
-	  Guice.createInjector(builder.applicationModule()).injectMembers(this);
+     GuiceApplicationBuilder builder = new GuiceApplicationLoader()
+         .builder(new ApplicationLoader.Context(Environment.simple()))
+         .overrides(testModule);
+     Guice.createInjector(builder.applicationModule()).injectMembers(this);
 
-	  Helpers.start(application);
-	}
+     Helpers.start(application);
+   }
 
-	@After
-	public void teardown() {
-	  Helpers.stop(application);
-	}
-	*/
-	
+   @After
+   public void teardown() {
+     Helpers.stop(application);
+   }
+   */
+   
 
-	
+   
 
 
 
-	
+   
 
-	
-	/*
-	@Test
-	public void findById() {
-	    running(application, () -> {
-	    	NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("", "", "");
-	    	System.out.println("here : " + ns.toString());
-	    });
-	}
-	*/	
+   
+   /*
+   @Test
+   public void findById() {
+       running(application, () -> {
+          NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("", "", "");
+          System.out.println("here : " + ns.toString());
+       });
+   }
+   */   
 }

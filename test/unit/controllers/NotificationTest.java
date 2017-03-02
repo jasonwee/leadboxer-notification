@@ -17,57 +17,57 @@ import play.Application;
 import play.mvc.Result;
 
 public class NotificationTest extends WithApplication {
-	
-	@Override
-	protected Application provideApplication() {
-		// we override default db.default parameter because we want to test.
+   
+   @Override
+   protected Application provideApplication() {
+      // we override default db.default parameter because we want to test.
         return fakeApplication(ImmutableMap.of(
                 "db.default.driver", "org.h2.Driver",
                 "db.default.url", "jdbc:h2:mem:play;MODE=MYSQL",
                 "db.default.username", "sa",
                 "db.default.password", ""
             ));
-	}
-	
-	@Test
-	public void redirectHomePage() {
-		Result result = Helpers.route(provideApplication(), controllers.routes.Notification.index());
+   }
+   
+   @Test
+   public void redirectHomePage() {
+      Result result = Helpers.route(provideApplication(), controllers.routes.Notification.index());
 
-		assertEquals(Helpers.SEE_OTHER, result.status());
-		assertEquals("/ns", result.redirectLocation().get()); 
-	}
-	
-	@Test
-	public void listNotificationSpecificationOnTheFirstPage() {
-		Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nKey", "asc", ""));
+      assertEquals(Helpers.SEE_OTHER, result.status());
+      assertEquals("/ns", result.redirectLocation().get()); 
+   }
+   
+   @Test
+   public void listNotificationSpecificationOnTheFirstPage() {
+      Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nKey", "asc", ""));
 
-		assertEquals(Helpers.OK, result.status());
-		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
-	}
-	
-	/**
-	 * TODO we can actually insert some sample value and so we can actually test actual filter data.
-	 *
-	 */
-	@Test
-	public void filterNotificationSpecificationByValue() {
-		Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nValue", "asc", "amd"));
+      assertEquals(Helpers.OK, result.status());
+      assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
+   }
+   
+   /**
+    * TODO we can actually insert some sample value and so we can actually test actual filter data.
+    *
+    */
+   @Test
+   public void filterNotificationSpecificationByValue() {
+      Result result = Helpers.route(provideApplication(), controllers.routes.Notification.list(0, "nValue", "asc", "amd"));
 
-		assertEquals(Helpers.OK, result.status());
-		assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
-	}
-	
-	/* TODO this actually work but we need to change things like configuraiton file use, the lb url and database use. currently
-	 * using persistent database. 
-	 *
+      assertEquals(Helpers.OK, result.status());
+      assertTrue(Helpers.contentAsString(result), Helpers.contentAsString(result).contains("No notification specifications found"));
+   }
+   
+   /* TODO this actually work but we need to change things like configuraiton file use, the lb url and database use. currently
+    * using persistent database. 
+    *
     @Test
     public void createANotificationSpecification() {
         Result result = Helpers.route(provideApplication(), controllers.routes.Notification.save());
 
-		assertEquals(Helpers.BAD_REQUEST, result.status());
+      assertEquals(Helpers.BAD_REQUEST, result.status());
 
         Map<String,String> data = new HashMap<>();
-        data.put("datasetId", "a1d90dccc04df83f26553dc753ed41f2");	
+        data.put("datasetId", "a1d90dccc04df83f26553dc753ed41f2");   
         data.put("nKey", "most_likely_company");
         data.put("nValue", "google");
         data.put("emailRecipients", "foo@bar.com");

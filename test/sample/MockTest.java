@@ -16,18 +16,18 @@ import org.junit.Test;
  */
 public class MockTest {
 
-	 @Test
-	  public void testMock() {
-	    
-		// Create and train mock
-		List<String> mockedList = mock(List.class);
-		when(mockedList.get(0)).thenReturn("first");
+    @Test
+     public void testMock() {
+       
+      // Create and train mock
+      List<String> mockedList = mock(List.class);
+      when(mockedList.get(0)).thenReturn("first");
 
-		// check value
-		assertEquals("first", mockedList.get(0));
+      // check value
+      assertEquals("first", mockedList.get(0));
 
-		// verify interaction
-		verify(mockedList).get(0);
-	  }
+      // verify interaction
+      verify(mockedList).get(0);
+     }
 
 }
