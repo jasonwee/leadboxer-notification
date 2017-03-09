@@ -36,6 +36,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -78,12 +79,12 @@ public class NotificationSpecificationTest extends WithApplication {
      public void testMock1() {
 
       // Create and train mock
-       NotificationSpecification ns = new NotificationSpecification();
+      List<NotificationSpecification> nss = new ArrayList<>();
       NotificationSpecification mockedList = mock(NotificationSpecification.class);
-      when(mockedList.getNotificationSpecification("1", "2", "3")).thenReturn(ns);
+      when(mockedList.getNotificationSpecification("1", "2", "3")).thenReturn(nss);
 
 
-      NotificationSpecification mytest = mockedList.getNotificationSpecification("1", "2", "3");
+      List<NotificationSpecification> mytest = mockedList.getNotificationSpecification("1", "2", "3");
       System.out.println(mytest.toString());
 
      }
@@ -180,8 +181,8 @@ public class NotificationSpecificationTest extends WithApplication {
    public void testGetNotificationSpecification() {
 
       running(fakeApplication(inMemoryDatabase()), () -> {
-         NotificationSpecification ns = NotificationSpecification.getNotificationSpecification("a1d90dccc04df83f26553dc753ed41f2", "foo", "bar");
-         assertNull(ns);
+         List<NotificationSpecification> ns = NotificationSpecification.getNotificationSpecification("a1d90dccc04df83f26553dc753ed41f2", "foo", "bar");
+         assertEquals(0, ns.size());
       });
    }
 
