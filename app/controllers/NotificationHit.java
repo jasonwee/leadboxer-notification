@@ -115,6 +115,9 @@ public class NotificationHit extends Controller {
          try {
             emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
 
+            // for test
+            emailId = null;
+
             // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
             // purpose outside of this try catch block.
             if (emailId == null || emailId.isEmpty()) {
@@ -145,6 +148,9 @@ public class NotificationHit extends Controller {
             String emailId = null;
             try {
                emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+
+               // for test
+               emailId = null;
 
                // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
                // purpose outside of this try catch block.
