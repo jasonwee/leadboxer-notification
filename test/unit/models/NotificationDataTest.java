@@ -52,9 +52,24 @@ public class NotificationDataTest {
          NotificationData nd = NotificationData.toNotificationData(nsString);
 
          assertEquals("2017-02-23 07:02:32", nd.hitTimestamp);
-         assertEquals("{\"dbTimestamp\":\"\",\"hitTimestamp\":\"2017-02-23 07:02:32\",\"datasetId\":\"e2d1c24722e8a52390a42be6e89f7a65\",\"notificationServer\":null,\"UUID\":\"\",\"logServer\":\"gl04.opentracker.net\",\"value\":\"Bae Systems\",\"key\":\"most_likely_company\"}", nd.toJsonString());
+         assertEquals("{\"dbTimestamp\":\"\",\"hitTimestamp\":\"2017-02-23 07:02:32\",\"datasetId\":\"e2d1c24722e8a52390a42be6e89f7a65\",\"notificationServer\":null,\"UUID\":\"\",\"logServer\":\"gl04.opentracker.net\",\"value\":\"Bae Systems\",\"key\":\"most_likely_company\",\"extras\":null}", nd.toJsonString());
       } catch (IOException e) {
          e.printStackTrace();
+      }
+   }
+
+   @Test
+   public void testToNotificationDataWithExtra() {
+      try {
+         String nsString = "{\"dbTimestamp\":\"\",\"hitTimestamp\":\"2017-03-09 17:40:57\",\"datasetId\":\"e2d1c24722e8a52390a42be6e89f7a65\",\"extras\":{\"event_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\",\"use_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\",\"session_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\"},\"notificationServer\":null,\"UUID\":\"\",\"logServer\":\"foo.opentracker.net\",\"value\":\"https://www.leadboxer.com/small-business-packages/\",\"key\":\"original_url\"}";
+
+         NotificationData nd = NotificationData.toNotificationData(nsString);
+
+         assertEquals("2017-03-09 17:40:57", nd.hitTimestamp);
+         assertEquals("{\"dbTimestamp\":\"\",\"hitTimestamp\":\"2017-03-09 17:40:57\",\"datasetId\":\"e2d1c24722e8a52390a42be6e89f7a65\",\"notificationServer\":null,\"UUID\":\"\",\"logServer\":\"foo.opentracker.net\",\"value\":\"https://www.leadboxer.com/small-business-packages/\",\"key\":\"original_url\",\"extras\":{\"event_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\",\"use_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\",\"session_id\":\"dd527e2a-d7ed-473b-8a80-b01a0acd4b4a\"}}", nd.toJsonString());
+      } catch (IOException e) {
+         e.printStackTrace();
+         fail("oh no");
       }
    }
 
@@ -62,7 +77,7 @@ public class NotificationDataTest {
    public void testToJsonString() {
       try {
          NotificationData nd = new NotificationData();
-         assertEquals("{\"dbTimestamp\":null,\"hitTimestamp\":null,\"datasetId\":null,\"notificationServer\":null,\"UUID\":null,\"logServer\":null,\"value\":null,\"key\":null}", nd.toJsonString());
+         assertEquals("{\"dbTimestamp\":null,\"hitTimestamp\":null,\"datasetId\":null,\"notificationServer\":null,\"UUID\":null,\"logServer\":null,\"value\":null,\"key\":null,\"extras\":null}", nd.toJsonString());
       } catch (JsonProcessingException e) {
          e.printStackTrace();
       }
