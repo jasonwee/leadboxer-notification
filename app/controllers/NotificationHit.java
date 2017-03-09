@@ -68,7 +68,7 @@ public class NotificationHit extends Controller {
 
    /**
     * TODO
-    * * email fail send 2 times, we should put into a queue and let another service to pick up and email out again.
+    * * email fail send 1 time, we should put into a queue and let another service to pick up and email out again.
     * * timeout?
     *
      *
@@ -111,7 +111,13 @@ public class NotificationHit extends Controller {
          String emails[] = email.split(",");
          Map<String, String> extra = new HashMap<>();
          extra.put("isInitial", "Initial");
-         String emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+         String emailId = null;
+         try {
+        	 emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+         } catch (Exception e) {
+        	 Logger.error("fail to send email", e);
+        	 putIntoFailQueue(email, nd, extra);
+         }
          NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
          savedNS.setLastSend(new Date());
          savedNS.update();
@@ -143,6 +149,10 @@ public class NotificationHit extends Controller {
 
       // return a valid json response.
       return result;
+   }
+   
+   private boolean putIntoFailQueue(String email, NotificationData nd, Map<String, String> extra) {
+	   return false;
    }
 
 }
