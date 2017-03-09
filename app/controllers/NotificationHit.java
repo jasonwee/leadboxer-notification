@@ -113,6 +113,7 @@ public class NotificationHit extends Controller {
              String emails[] = email.split(",");
              Map<String, String> extra = new HashMap<>();
              extra.put("isInitial", "Initial");
+             extra.putAll(nd.extras);
              String emailId = null;
              try {
                 emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
@@ -144,6 +145,7 @@ public class NotificationHit extends Controller {
                 String emails[] = email.split(",");
                 Map<String, String> extra = new HashMap<>();
                 extra.put("isInitial", "Recurrent");
+                extra.putAll(nd.extras);
                 String emailId = null;
                 try {
                    emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
