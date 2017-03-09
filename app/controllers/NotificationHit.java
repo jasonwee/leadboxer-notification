@@ -120,7 +120,7 @@ public class NotificationHit extends Controller {
                 // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
                 // purpose outside of this try catch block.
                 if (emailId == null || emailId.isEmpty()) {
-                   throw new Exception("cannot be empty");
+                   throw new Exception("cannot be empty " + emailId);
                 }
              } catch (Exception e) {
                 Logger.error("fail to send initial email", e);
@@ -151,7 +151,7 @@ public class NotificationHit extends Controller {
                    // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
                    // purpose outside of this try catch block.
                    if (emailId == null || emailId.isEmpty()) {
-                      throw new Exception("cannot be empty");
+                      throw new Exception("cannot be empty " + emailId);
                    }
                 } catch (Exception e) {
                      Logger.error("fail to send recurrent email", e);
