@@ -113,10 +113,16 @@ public class NotificationHit extends Controller {
          extra.put("isInitial", "Initial");
          String emailId = null;
          try {
-        	 emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+            emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+
+            // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
+            // purpose outside of this try catch block.
+            if (emailId == null || emailId.isEmpty()) {
+               throw new Exception("cannot be empty");
+            }
          } catch (Exception e) {
-        	 Logger.error("fail to send email", e);
-        	 putIntoFailQueue(email, nd, extra);
+            Logger.error("fail to send initial email", e);
+            putIntoRetryQueue(email, nd, extra);
          }
          NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
          savedNS.setLastSend(new Date());
@@ -136,7 +142,19 @@ public class NotificationHit extends Controller {
             String emails[] = email.split(",");
             Map<String, String> extra = new HashMap<>();
             extra.put("isInitial", "Recurrent");
-            String emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+            String emailId = null;
+            try {
+               emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+
+               // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
+               // purpose outside of this try catch block.
+               if (emailId == null || emailId.isEmpty()) {
+                  throw new Exception("cannot be empty");
+               }
+            } catch (Exception e) {
+                 Logger.error("fail to send recurrent email", e);
+                 putIntoRetryQueue(email, nd, extra);
+            }
             NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
             savedNS.setLastSend(new Date());
             savedNS.update();
@@ -146,13 +164,13 @@ public class NotificationHit extends Controller {
          }
       }
 
-
       // return a valid json response.
       return result;
    }
    
-   private boolean putIntoFailQueue(String email, NotificationData nd, Map<String, String> extra) {
-	   return false;
+   private boolean putIntoRetryQueue(String email, NotificationData nd, Map<String, String> extra) {
+      Logger.info("putting into queue");
+      return true;
    }
 
 }
