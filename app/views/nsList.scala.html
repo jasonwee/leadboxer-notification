@@ -71,7 +71,6 @@
                     @header("nKey", "Key")
                     @header("nValue", "Value")
                     @header("emailRecipients", "Email recipients")
-                    @header("nsAdded", "NS added")
                     @header("lastSend", "Alert last send")
                     @header("sendCondition", "Sending condition")
                 </tr>
@@ -107,13 +106,6 @@
                                 <em>-</em>
                             } else {
                                 @ns.getEmailRecipients()
-                            }
-                        </td>
-                        <td>
-                            @if(ns.getNsAdded == null) {
-                                <em>-</em>
-                            } else {
-                                @ns.getNsAdded()
                             }
                         </td>
                         <td>
