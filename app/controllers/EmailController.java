@@ -61,7 +61,7 @@ public class EmailController extends Controller {
 		email.setSubject(String.format(String.format("LeadBoxer Notification Hit - %s - %s", nd.key, nd.value)));
 		email.setFrom("<noreply@leadboxer.com>");
 		recipients.forEach((e) -> email.addTo(e));
-		String message = String.format("%s Hit%n%s : %s%n%nHit Timestamp : %s", extra.getOrDefault("isInitial", "Recurrent"), nd.key, nd.value, nd.hitTimestamp);
+		String message = String.format("%s Hit%n%s : %s%n%nHit Timestamp : %s%nLeadcard URL : https://product.leadboxer.com/leadcard/index.jsp?dataset_id=%s&use_id=%s", extra.getOrDefault("isInitial", "Recurrent"), nd.key, nd.value, nd.hitTimestamp, nd.datasetId, extra.get("use_id"));
 		email.setBodyText(message);
 		String id = mailerClient.send(email);
 		return id;
@@ -71,6 +71,7 @@ public class EmailController extends Controller {
 		 *  nd.key : nd.value
 		 *
 		 *  hit timestamp : nd.hitTimestamp
+		 *  leadcard url : https://product.leadboxer.com/leadcard/index.jsp?dataset_id=0909f23883cccc11c97aac54408b364b&use_id=extra.get("use_id")
 		 */
 	}
 
