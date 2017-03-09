@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -92,82 +93,78 @@ public class NotificationHit extends Controller {
 
       // check in ns if the object still available, if not available, log it and return
       // datasetid, key, value
-      NotificationSpecification nsHit = NotificationSpecification.getNotificationSpecification(nd.datasetId, nd.key, nd.value);
+      List<NotificationSpecification> nsHits = NotificationSpecification.getNotificationSpecification(nd.datasetId, nd.key, nd.value);
 
-      if (nsHit == null) {
+      if (nsHits == null || nsHits.isEmpty()) {
          Logger.warn("ns has been removed? stale hit {}", hitJson.toString());
          result.put("status", String.format("ns has been removed? stale hit %s", hitJson.toString()));
          return result;
       }
 
-      // get the email and lastSent from ns.
-      String email = nsHit.getEmailRecipients();
-      Date lastSend = nsHit.getLastSend();
-      String condition = nsHit.getSendCondition();
+      for (NotificationSpecification nsHit : nsHits) {
+          // get the email and lastSent from ns.
+          String email = nsHit.getEmailRecipients();
+          Date lastSend = nsHit.getLastSend();
+          String condition = nsHit.getSendCondition();
 
-      // check sending condition. like N minute send one. // if email sent, update ns last sent
-      Logger.info("email {} lastSend {} condition {}", email, lastSend, condition);
-      if (lastSend == null) {  // first time
-         String emails[] = email.split(",");
-         Map<String, String> extra = new HashMap<>();
-         extra.put("isInitial", "Initial");
-         String emailId = null;
-         try {
-            emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
+          // check sending condition. like N minute send one. // if email sent, update ns last sent
+          Logger.info("email {} lastSend {} condition {}", email, lastSend, condition);
+          if (lastSend == null) {  // first time
+             String emails[] = email.split(",");
+             Map<String, String> extra = new HashMap<>();
+             extra.put("isInitial", "Initial");
+             String emailId = null;
+             try {
+                emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
 
-            // for test
-            emailId = null;
+                // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
+                // purpose outside of this try catch block.
+                if (emailId == null || emailId.isEmpty()) {
+                   throw new Exception("cannot be empty");
+                }
+             } catch (Exception e) {
+                Logger.error("fail to send initial email", e);
+                putIntoRetryQueue(email, nd, extra);
+             }
+             NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
+             savedNS.setLastSend(new Date());
+             savedNS.update();
+             result.put("status", String.format("email %s sent", emailId));
+          } else { // Recurrent
+             Date now = new Date();
+             String conditions[] = condition.split("=");
+             // TODO simple way of getting based on splitting equal sign. it should more robust:
+             // * in the form, validate input
+             // * check, checks if conditions not null and length > length % 2 == 0 and length > 2
+             // * get based on n.
+             int duration = Integer.parseInt(conditions[1]);
 
-            // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
-            // purpose outside of this try catch block.
-            if (emailId == null || emailId.isEmpty()) {
-               throw new Exception("cannot be empty");
-            }
-         } catch (Exception e) {
-            Logger.error("fail to send initial email", e);
-            putIntoRetryQueue(email, nd, extra);
-         }
-         NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
-         savedNS.setLastSend(new Date());
-         savedNS.update();
-         result.put("status", String.format("email %s sent", emailId));
-      } else { // Recurrent
-         Date now = new Date();
-         String conditions[] = condition.split("=");
-         // TODO simple way of getting based on splitting equal sign. it should more robust:
-         // * in the form, validate input
-         // * check, checks if conditions not null and length > length % 2 == 0 and length > 2
-         // * get based on n.
-         int duration = Integer.parseInt(conditions[1]);
+             long padLastSend = lastSend.getTime() + duration * 1000L;
+             if (now.getTime() > padLastSend) { // when the time now is greater than the last send + the condition
+                String emails[] = email.split(",");
+                Map<String, String> extra = new HashMap<>();
+                extra.put("isInitial", "Recurrent");
+                String emailId = null;
+                try {
+                   emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
 
-         long padLastSend = lastSend.getTime() + duration * 1000L;
-         if (now.getTime() > padLastSend) { // when the time now is greater than the last send + the condition
-            String emails[] = email.split(",");
-            Map<String, String> extra = new HashMap<>();
-            extra.put("isInitial", "Recurrent");
-            String emailId = null;
-            try {
-               emailId = emailer.sendEmail(Arrays.asList(emails), nd, extra);
-
-               // for test
-               emailId = null;
-
-               // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
-               // purpose outside of this try catch block.
-               if (emailId == null || emailId.isEmpty()) {
-                  throw new Exception("cannot be empty");
-               }
-            } catch (Exception e) {
-                 Logger.error("fail to send recurrent email", e);
-                 putIntoRetryQueue(email, nd, extra);
-            }
-            NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
-            savedNS.setLastSend(new Date());
-            savedNS.update();
-            result.put("status", String.format("email %s sent", emailId));
-         } else { // when the time now is less than or eq the last send + the condition
-            result.put("status", "email not sent as recurrent condition not satisfy");
-         }
+                   // we check it here and throw it here because we want to catch handle all email cases here, dont want to the same
+                   // purpose outside of this try catch block.
+                   if (emailId == null || emailId.isEmpty()) {
+                      throw new Exception("cannot be empty");
+                   }
+                } catch (Exception e) {
+                     Logger.error("fail to send recurrent email", e);
+                     putIntoRetryQueue(email, nd, extra);
+                }
+                NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
+                savedNS.setLastSend(new Date());
+                savedNS.update();
+                result.put("status", String.format("email %s sent", emailId));
+             } else { // when the time now is less than or eq the last send + the condition
+                result.put("status", "email not sent as recurrent condition not satisfy");
+             }
+          }
       }
 
       // return a valid json response.
