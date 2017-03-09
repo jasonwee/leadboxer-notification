@@ -28,7 +28,9 @@ package common;
 import com.google.inject.AbstractModule;
 
 import play.Logger;
+import play.libs.akka.AkkaGuiceSupport;
 import services.MessageQueueConnection;
+import services.SchedulingTask;
 
 /**
  * module that need to be started when play start. then you bind it here as as eagersingleton.
@@ -36,13 +38,15 @@ import services.MessageQueueConnection;
  * @author jason
  *
  */
-public class Module extends AbstractModule {
+public class Module extends AbstractModule implements AkkaGuiceSupport {
 
 	@Override
 	protected void configure() {
 		Logger.info("testing start");
 		bind(MessageQueueConnection.class).asEagerSingleton();
 
+		bindActor(UpdateDbActor.class, "update-db-actor");
+		bind(SchedulingTask.class).asEagerSingleton();
 	}
 
 }
