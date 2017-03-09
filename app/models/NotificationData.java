@@ -26,6 +26,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,6 +50,8 @@ public class NotificationData {
    public String logServer;
    public String value;
    public String key;
+
+   public Map<String, String> extras;
 
    public String toJsonString() throws JsonProcessingException {
       ObjectMapper mapper = new ObjectMapper();
