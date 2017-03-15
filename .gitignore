@@ -7,3 +7,4 @@ target
 /.settings
 /RUNNING_PID
 /bin/
+conf/application-local.conf
