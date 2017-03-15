@@ -39,5 +39,5 @@ EclipseKeys.createSrc := EclipseCreateSrc.ValueSet(EclipseCreateSrc.ManagedClass
 EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 EclipseKeys.withSource := true
 
-// for local test uncomment the following
-//javaOptions ++= Seq("-Dconfig.file=conf/application-local.conf")
+// for local test
+javaOptions ++= Seq("-Dconfig.file=conf/application-local.conf")
