@@ -40,4 +40,5 @@ EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE18)
 EclipseKeys.withSource := true
 
 // for local test
+javaOptions in Test += "-Dconfig.file=conf/application-local.conf"
 //javaOptions ++= Seq("-Dconfig.file=conf/application-local.conf")
