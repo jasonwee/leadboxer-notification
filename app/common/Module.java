@@ -43,10 +43,10 @@ public class Module extends AbstractModule implements AkkaGuiceSupport {
 	@Override
 	protected void configure() {
 		Logger.info("testing start");
-		bind(MessageQueueConnection.class).asEagerSingleton();
+		//bind(MessageQueueConnection.class).asEagerSingleton();
 
-		bindActor(UpdateDbActor.class, "update-db-actor");
-		bind(SchedulingTask.class).asEagerSingleton();
+		//bindActor(UpdateDbActor.class, "update-db-actor");
+		//bind(SchedulingTask.class).asEagerSingleton();
 	}
 
 }
