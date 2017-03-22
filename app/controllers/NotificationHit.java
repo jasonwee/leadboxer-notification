@@ -41,6 +41,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.NotificationData;
 import models.NotificationSpecification;
+import models.RetryQueue;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -125,7 +126,7 @@ public class NotificationHit extends Controller {
                 }
              } catch (Exception e) {
                 Logger.error("fail to send initial email", e);
-                putIntoRetryQueue(email, nd, extra);
+                putIntoRetryQueue(nsHit);
              }
              NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
              savedNS.setLastSend(new Date());
@@ -157,7 +158,7 @@ public class NotificationHit extends Controller {
                    }
                 } catch (Exception e) {
                      Logger.error("fail to send recurrent email", e);
-                     putIntoRetryQueue(email, nd, extra);
+                     putIntoRetryQueue(nsHit);
                 }
                 NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
                 savedNS.setLastSend(new Date());
@@ -173,8 +174,12 @@ public class NotificationHit extends Controller {
       return result;
    }
    
-   private boolean putIntoRetryQueue(String email, NotificationData nd, Map<String, String> extra) {
-      Logger.info("putting into queue");
+   private boolean putIntoRetryQueue(NotificationSpecification ns) {
+      Logger.info("putting {} into queue", ns.getId());
+      RetryQueue newQueue = new RetryQueue();
+      newQueue.setMaxRetry(3);
+      newQueue.setNotificationId(ns.getId());
+      newQueue.save();
       return true;
    }
 
