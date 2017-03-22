@@ -27,6 +27,8 @@ package common;
 
 import com.google.inject.AbstractModule;
 
+import actors.RetryQueueActor;
+import controllers.RetryQueueController;
 import play.Logger;
 import play.libs.akka.AkkaGuiceSupport;
 import services.MessageQueueConnection;
@@ -42,11 +44,14 @@ public class Module extends AbstractModule implements AkkaGuiceSupport {
 
 	@Override
 	protected void configure() {
-		Logger.info("testing start");
+		Logger.info("notification-module start");
 		//bind(MessageQueueConnection.class).asEagerSingleton();
 
 		//bindActor(UpdateDbActor.class, "update-db-actor");
 		//bind(SchedulingTask.class).asEagerSingleton();
+
+		bindActor(RetryQueueActor.class, "retry-queue-actor");
+		bind(RetryQueueController.class).asEagerSingleton();
 	}
 
 }
