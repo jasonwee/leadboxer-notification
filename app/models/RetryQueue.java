@@ -25,9 +25,14 @@
 
 package models;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
+
 import play.data.validation.Constraints;
 
 /**
@@ -38,7 +43,49 @@ import play.data.validation.Constraints;
 @Entity
 public class RetryQueue extends Model {
 
+   @Id
+   public UUID id;
+
    @Constraints.Required
    public int maxRetry = 3;
+
+   @Constraints.Required
+   public int retry;
+
+   @Constraints.Required
+   public Long notificationId;
+
+   public int getMaxRetry() {
+      return maxRetry;
+   }
+
+   public void setMaxRetry(int maxRetry) {
+      this.maxRetry = maxRetry;
+   }
+
+   public int getRetry() {
+      return retry;
+   }
+
+   public void setRetry(int retry) {
+      this.retry = retry;
+   }
+
+   public Long getNotificationId() {
+      return notificationId;
+   }
+
+   public void setNotificationId(Long notificationId) {
+      this.notificationId = notificationId;
+   }
+
+   public static Find<UUID, RetryQueue> find = new Find<UUID, RetryQueue>() {
+
+   };
+
+   public static PagedList<RetryQueue> page(int page, int pageSize, String sortBy, String order, String filter) {
+	   //return find.where().ilike("", "%" + filter + "%").orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
+	   return find.where().orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
+   }
 
 }
