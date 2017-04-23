@@ -1,6 +1,7 @@
 package actors;
 
 import akka.actor.UntypedActor;
+import play.Logger;
 
 public class RetryQueueActor extends UntypedActor {
    
@@ -22,7 +23,7 @@ public class RetryQueueActor extends UntypedActor {
    
    private void startRetry() {
       try {
-         System.out.println("running " + System.currentTimeMillis());
+         Logger.info("running -> " + System.currentTimeMillis());
          inProgress = true;
          
          Thread.sleep(20000);
