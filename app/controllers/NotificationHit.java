@@ -126,7 +126,7 @@ public class NotificationHit extends Controller {
                 }
              } catch (Exception e) {
                 Logger.error("fail to send initial email", e);
-                putIntoRetryQueue(nsHit);
+                putIntoRetryQueue(nsHit, hitJson);
              }
              NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
              savedNS.setLastSend(new Date());
@@ -158,7 +158,7 @@ public class NotificationHit extends Controller {
                    }
                 } catch (Exception e) {
                      Logger.error("fail to send recurrent email", e);
-                     putIntoRetryQueue(nsHit);
+                     putIntoRetryQueue(nsHit, hitJson);
                 }
                 NotificationSpecification savedNS = NotificationSpecification.find.ref(nsHit.getId());
                 savedNS.setLastSend(new Date());
@@ -174,11 +174,12 @@ public class NotificationHit extends Controller {
       return result;
    }
    
-   private boolean putIntoRetryQueue(NotificationSpecification ns) {
+   private boolean putIntoRetryQueue(NotificationSpecification ns, JsonNode hitJson) {
       Logger.info("putting {} into queue", ns.getId());
       RetryQueue newQueue = new RetryQueue();
       newQueue.setMaxRetry(3);
       newQueue.setNotificationId(ns.getId());
+      newQueue.setHitJson(hitJson);
       newQueue.save();
       return true;
    }
