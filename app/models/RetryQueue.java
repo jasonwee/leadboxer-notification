@@ -32,6 +32,8 @@ import javax.persistence.Id;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
+import com.avaje.ebean.annotation.DbJson;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.data.validation.Constraints;
 
@@ -54,6 +56,9 @@ public class RetryQueue extends Model {
 
    @Constraints.Required
    public Long notificationId;
+
+   @DbJson
+   public JsonNode hitJson;
 
    public int getMaxRetry() {
       return maxRetry;
@@ -79,13 +84,21 @@ public class RetryQueue extends Model {
       this.notificationId = notificationId;
    }
 
+   public JsonNode getHitJson() {
+      return hitJson;
+   }
+
+   public void setHitJson(JsonNode hitJson) {
+      this.hitJson = hitJson;
+   }
+
    public static Find<UUID, RetryQueue> find = new Find<UUID, RetryQueue>() {
 
    };
 
    public static PagedList<RetryQueue> page(int page, int pageSize, String sortBy, String order, String filter) {
-	   //return find.where().ilike("", "%" + filter + "%").orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
-	   return find.where().orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
+      //return find.where().ilike("", "%" + filter + "%").orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
+      return find.where().orderBy(sortBy + " " + order).setFirstRow(page).setMaxRows(pageSize).findPagedList();
    }
 
 }
