@@ -166,24 +166,26 @@ public class LogServer extends Controller {
     * 
     * @param datasetId
     */
-   public void updateDataset(String datasetId) {
-      String url = config.getString("leadboxer.logserver.notification_url");
-      Logger.info("pushing {} to url {}", datasetId, url);
-      WSRequest request = ws.url(url)
-            .setRequestTimeout(5000)
-            .setContentType("application/json");
+    public void updateDataset(String datasetId) {
+       List<String> urls = config.getStringList("leadboxer.logserver.notification_urls");
 
-      JsonNode body = getDatasetFromDS(datasetId);
+       urls.forEach(url -> {
+          Logger.info("pushing {} to url {}", datasetId, url);
+          WSRequest request = ws.url(url).setRequestTimeout(5000).setContentType("application/json");
 
-      CompletionStage<WSResponse> responsePromise = request.post(body);
+          JsonNode body = getDatasetFromDS(datasetId);
 
-      try {
-         WSResponse response = responsePromise.toCompletableFuture().get();
-         Logger.info("response from log server {}", response.getBody());
-      } catch (InterruptedException | ExecutionException e) {
-         Logger.error("unable to push to logserver", e);
-      }
-   }
+          CompletionStage<WSResponse> responsePromise = request.post(body);
+
+          try {
+             WSResponse response = responsePromise.toCompletableFuture().get();
+             Logger.info("response from log server {}", response.getBody());
+          } catch (InterruptedException | ExecutionException e) {
+             Logger.error("unable to push to logserver", e);
+          }
+       });
+
+    }
    
    /**
     *  read from database for a given datasetId and format the output example of the following into JsonNode format
