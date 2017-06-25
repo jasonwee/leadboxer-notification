@@ -96,6 +96,16 @@ public class LogServer extends Controller {
          List<String> companies = new ArrayList<>();
          List<String> industries = new ArrayList<>();
          List<String> urls = new ArrayList<>();
+         List<String> countryCodes = new ArrayList<>();
+         List<String> countryNames = new ArrayList<>();
+         List<String> regionCodes = new ArrayList<>();
+         List<String> regions = new ArrayList<>();
+         List<String> cities = new ArrayList<>();
+         List<String> dmaCodes = new ArrayList<>();
+         List<String> areaCodes = new ArrayList<>();
+         List<String> postalCodes = new ArrayList<>();
+         List<String> emails = new ArrayList<>();
+         List<String> browsers = new ArrayList<>();
 
          for (NotificationSpecification ns : nss) {
             switch (ns.getnKey()) {
@@ -108,12 +118,44 @@ public class LogServer extends Controller {
             case "original_url":
                urls.add(ns.getnValue());
                break;
+            case "country_code":
+                countryCodes.add(ns.getnValue());
+                break;
+            case "country_name":
+                countryNames.add(ns.getnValue());
+                break;
+            case "region_code":
+                regionCodes.add(ns.getnValue());
+                break;
+            case "region":
+                regions.add(ns.getnValue());
+                break;
+            case "city":
+                cities.add(ns.getnValue());
+                break;
+            case "dma_code":
+                dmaCodes.add(ns.getnValue());
+                break;
+            case "area_code":
+                areaCodes.add(ns.getnValue());
+                break;
+            case "postal_code":
+                postalCodes.add(ns.getnValue());
+                break;
+            case "email":
+                emails.add(ns.getnValue());
+                break;
+            case "browser":
+                browsers.add(ns.getnValue());
+                break;
             }
          }
 
          // TODO we should really put this into a form where user can
          // specify.
-         if (companies.size() > 0 || industries.size() > 0 || urls.size() > 0) {
+         if (companies.size() > 0 || industries.size() > 0 || urls.size() > 0 || countryCodes.size() > 0 || countryNames.size() >0 
+                 || regionCodes.size() > 0 || regions.size() > 0 || cities.size() > 0 || dmaCodes.size() > 0 || areaCodes.size() > 0 
+                 || postalCodes.size() > 0 || emails.size() > 0 || browsers.size() > 0) {
             enable = true;
          }
 
@@ -142,6 +184,76 @@ public class LogServer extends Controller {
             ArrayNode an = notifications.putArray("original_url");
             urls.forEach(u -> an.add(u));
          }
+
+         if (countryCodes.size() == 1) {
+             notifications.put("country_code", countryCodes.get(0));
+          } else if (countryCodes.size() > 1) {
+             ArrayNode an = notifications.putArray("country_code");
+             countryCodes.forEach(u -> an.add(u));
+          }
+
+         if (countryNames.size() == 1) {
+             notifications.put("country_name", countryNames.get(0));
+          } else if (countryNames.size() > 1) {
+             ArrayNode an = notifications.putArray("country_name");
+             countryNames.forEach(u -> an.add(u));
+          }
+
+         if (regionCodes.size() == 1) {
+             notifications.put("region_code", regionCodes.get(0));
+          } else if (regionCodes.size() > 1) {
+             ArrayNode an = notifications.putArray("region_code");
+             regionCodes.forEach(u -> an.add(u));
+          }
+
+         if (regions.size() == 1) {
+             notifications.put("region", regions.get(0));
+          } else if (regions.size() > 1) {
+             ArrayNode an = notifications.putArray("region");
+             regions.forEach(u -> an.add(u));
+          }
+
+         if (cities.size() == 1) {
+             notifications.put("city", cities.get(0));
+          } else if (cities.size() > 1) {
+             ArrayNode an = notifications.putArray("city");
+             cities.forEach(u -> an.add(u));
+          }
+
+         if (dmaCodes.size() == 1) {
+             notifications.put("dma_code", dmaCodes.get(0));
+          } else if (dmaCodes.size() > 1) {
+             ArrayNode an = notifications.putArray("dma_code");
+             dmaCodes.forEach(u -> an.add(u));
+          }
+
+         if (areaCodes.size() == 1) {
+             notifications.put("area_code", areaCodes.get(0));
+          } else if (areaCodes.size() > 1) {
+             ArrayNode an = notifications.putArray("area_code");
+             areaCodes.forEach(u -> an.add(u));
+          }
+
+         if (postalCodes.size() == 1) {
+             notifications.put("postal_code", postalCodes.get(0));
+          } else if (postalCodes.size() > 1) {
+             ArrayNode an = notifications.putArray("postal_code");
+             postalCodes.forEach(u -> an.add(u));
+          }
+
+         if (emails.size() == 1) {
+             notifications.put("email", emails.get(0));
+          } else if (emails.size() > 1) {
+             ArrayNode an = notifications.putArray("email");
+             emails.forEach(u -> an.add(u));
+          }
+
+         if (browsers.size() == 1) {
+             notifications.put("browser", browsers.get(0));
+          } else if (browsers.size() > 1) {
+             ArrayNode an = notifications.putArray("browser");
+             browsers.forEach(u -> an.add(u));
+          }
 
          datasets.add(dataset);
       }
@@ -234,11 +346,21 @@ public class LogServer extends Controller {
       if (nss == null | nss.isEmpty()) {
          enable = false;
       }
-      
+
       List<String> companies = new ArrayList<>();
       List<String> industries = new ArrayList<>();
       List<String> urls = new ArrayList<>();
-      
+      List<String> countryCodes = new ArrayList<>();
+      List<String> countryNames = new ArrayList<>();
+      List<String> regionCodes = new ArrayList<>();
+      List<String> regions = new ArrayList<>();
+      List<String> cities = new ArrayList<>();
+      List<String> dmaCodes = new ArrayList<>();
+      List<String> areaCodes = new ArrayList<>();
+      List<String> postalCodes = new ArrayList<>();
+      List<String> emails = new ArrayList<>();
+      List<String> browsers = new ArrayList<>();
+
       for (NotificationSpecification ns : nss) {
          switch (ns.getnKey()) {
          case "most_likely_company":
@@ -250,11 +372,43 @@ public class LogServer extends Controller {
          case "original_url":
             urls.add(ns.getnValue());
             break;
+         case "country_code":
+             countryCodes.add(ns.getnValue());
+             break;
+         case "country_name":
+             countryNames.add(ns.getnValue());
+             break;
+         case "region_code":
+             regionCodes.add(ns.getnValue());
+             break;
+         case "region":
+             regions.add(ns.getnValue());
+             break;
+         case "city":
+             cities.add(ns.getnValue());
+             break;
+         case "dma_code":
+             dmaCodes.add(ns.getnValue());
+             break;
+         case "area_code":
+             areaCodes.add(ns.getnValue());
+             break;
+         case "postal_code":
+             postalCodes.add(ns.getnValue());
+             break;
+         case "email":
+             emails.add(ns.getnValue());
+             break;
+         case "browser":
+             browsers.add(ns.getnValue());
+             break;
          }
       }
-      
+
       // TODO we should really put this into a form where user can specify.
-      if (companies.size() > 0 || industries.size() > 0 || urls.size() > 0) {
+      if (companies.size() > 0 || industries.size() > 0 || urls.size() > 0 || countryCodes.size() > 0 || countryNames.size() >0 
+          || regionCodes.size() > 0 || regions.size() > 0 || cities.size() > 0 || dmaCodes.size() > 0 || areaCodes.size() > 0 
+          || postalCodes.size() > 0 || emails.size() > 0 || browsers.size() > 0) {
          enable = true;
       }
       
@@ -270,7 +424,7 @@ public class LogServer extends Controller {
          ArrayNode an = notifications.putArray("most_likely_company");
          companies.forEach((c) -> an.add(c));
       }
-      
+
       if (industries.size() == 1) {
          notifications.put("li_industry", industries.get(0));
       } else if (industries.size() > 1) {
@@ -285,6 +439,76 @@ public class LogServer extends Controller {
          urls.forEach(u -> an.add(u));
       }
       
+      if (countryCodes.size() == 1) {
+          notifications.put("country_code", countryCodes.get(0));
+       } else if (countryCodes.size() > 1) {
+          ArrayNode an = notifications.putArray("country_code");
+          countryCodes.forEach(u -> an.add(u));
+       }
+
+      if (countryNames.size() == 1) {
+          notifications.put("country_name", countryNames.get(0));
+       } else if (countryNames.size() > 1) {
+          ArrayNode an = notifications.putArray("country_name");
+          countryNames.forEach(u -> an.add(u));
+       }
+
+      if (regionCodes.size() == 1) {
+          notifications.put("region_code", regionCodes.get(0));
+       } else if (regionCodes.size() > 1) {
+          ArrayNode an = notifications.putArray("region_code");
+          regionCodes.forEach(u -> an.add(u));
+       }
+
+      if (regions.size() == 1) {
+          notifications.put("region", regions.get(0));
+       } else if (regions.size() > 1) {
+          ArrayNode an = notifications.putArray("region");
+          regions.forEach(u -> an.add(u));
+       }
+
+      if (cities.size() == 1) {
+          notifications.put("city", cities.get(0));
+       } else if (cities.size() > 1) {
+          ArrayNode an = notifications.putArray("city");
+          cities.forEach(u -> an.add(u));
+       }
+
+      if (dmaCodes.size() == 1) {
+          notifications.put("dma_code", dmaCodes.get(0));
+       } else if (dmaCodes.size() > 1) {
+          ArrayNode an = notifications.putArray("dma_code");
+          dmaCodes.forEach(u -> an.add(u));
+       }
+
+      if (areaCodes.size() == 1) {
+          notifications.put("area_code", areaCodes.get(0));
+       } else if (areaCodes.size() > 1) {
+          ArrayNode an = notifications.putArray("area_code");
+          areaCodes.forEach(u -> an.add(u));
+       }
+
+      if (postalCodes.size() == 1) {
+          notifications.put("postal_code", postalCodes.get(0));
+       } else if (postalCodes.size() > 1) {
+          ArrayNode an = notifications.putArray("postal_code");
+          postalCodes.forEach(u -> an.add(u));
+       }
+
+      if (emails.size() == 1) {
+          notifications.put("email", emails.get(0));
+       } else if (emails.size() > 1) {
+          ArrayNode an = notifications.putArray("email");
+          emails.forEach(u -> an.add(u));
+       }
+
+      if (browsers.size() == 1) {
+          notifications.put("browser", browsers.get(0));
+       } else if (browsers.size() > 1) {
+          ArrayNode an = notifications.putArray("browser");
+          browsers.forEach(u -> an.add(u));
+       }
+
       if (Logger.isDebugEnabled()) {
          ObjectMapper mapper = new ObjectMapper();
          mapper.enable(SerializationFeature.INDENT_OUTPUT);
